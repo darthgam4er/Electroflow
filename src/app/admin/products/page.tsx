@@ -1,5 +1,4 @@
 
-'use client';
 import {
   Table,
   TableBody,
@@ -12,30 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from 'next/link';
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { getProducts } from "./actions";
 import type { Product } from "@/lib/types";
-import { Skeleton } from "@/components/ui/skeleton";
 
-export default function AdminProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadProducts() {
-      setLoading(true);
-      try {
-        const fetchedProducts = await getProducts() as Product[];
-        setProducts(fetchedProducts);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-        // Optionally, show a toast or error message to the user
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadProducts();
-  }, []);
+export default async function AdminProductsPage() {
+  const products = await getProducts() as Product[];
 
   return (
     <div className="flex flex-col gap-6">
@@ -58,18 +38,7 @@ export default function AdminProductsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading ? (
-              Array.from({ length: 5 }).map((_, i) => (
-                <TableRow key={i}>
-                  <TableCell><Skeleton className="h-16 w-16 rounded-md" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-48" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-16" /></TableCell>
-                  <TableCell><Skeleton className="h-6 w-20 rounded-full" /></TableCell>
-                  <TableCell className="text-right"><Skeleton className="h-8 w-16" /></TableCell>
-                </TableRow>
-              ))
-            ) : products.length === 0 ? (
+            {products.length === 0 ? (
                 <TableRow>
                     <TableCell colSpan={6} className="text-center h-24 text-muted-foreground">
                         No products found. Add one to get started.
