@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'ElectroFlow - Modern Electronics',
+  title: 'Electroplanet - High-Tech & Electroménager',
   description: 'Your one-stop shop for the latest in tech.',
 };
 

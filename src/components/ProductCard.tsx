@@ -22,8 +22,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     e.stopPropagation();
     addToCart(product);
     toast({
-      title: 'Added to cart',
-      description: `${product.name} has been added to your cart.`,
+      title: 'Ajouté au panier',
+      description: `${product.name} a été ajouté à votre panier.`,
     });
   };
 
@@ -50,10 +50,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Button
             size="sm"
             onClick={handleAddToCart}
-            style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}
+            className="bg-accent text-accent-foreground hover:bg-accent/90"
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
-            Add to Cart
+            Ajouter
           </Button>
         </CardFooter>
       </Card>

@@ -16,22 +16,22 @@ export default function CartPage() {
 
   const handleCheckout = () => {
     toast({
-        title: "Checkout Unavailable",
-        description: "This is a demo application. Checkout functionality is not implemented.",
+        title: "Paiement non disponible",
+        description: "Ceci est une application de démonstration. La fonctionnalité de paiement n'est pas implémentée.",
         variant: "destructive"
     })
   }
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
-      <h1 className="text-3xl md:text-4xl font-bold mb-8 font-headline">Your Shopping Cart</h1>
+      <h1 className="text-3xl md:text-4xl font-bold mb-8 font-headline">Votre panier</h1>
       {cart.length === 0 ? (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
             <ShoppingBag className="mx-auto h-16 w-16 text-muted-foreground" />
-          <h2 className="mt-6 text-xl font-semibold">Your cart is empty</h2>
-          <p className="mt-2 text-muted-foreground">Looks like you haven't added anything to your cart yet.</p>
+          <h2 className="mt-6 text-xl font-semibold">Votre panier est vide</h2>
+          <p className="mt-2 text-muted-foreground">Il semble que vous n'ayez encore rien ajouté à votre panier.</p>
           <Button asChild className="mt-6" style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}>
-            <Link href="/">Start Shopping</Link>
+            <Link href="/">Commencer vos achats</Link>
           </Button>
         </div>
       ) : (
@@ -68,16 +68,16 @@ export default function CartPage() {
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle>Résumé de la commande</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
-                  <span>Subtotal ({cartCount} items)</span>
+                  <span>Sous-total ({cartCount} articles)</span>
                   <span>${cartTotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span>Free</span>
+                  <span>Livraison</span>
+                  <span>Gratuite</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">
@@ -92,7 +92,7 @@ export default function CartPage() {
                     onClick={handleCheckout}
                     style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}
                 >
-                  Proceed to Checkout
+                  Passer au paiement
                 </Button>
               </CardFooter>
             </Card>

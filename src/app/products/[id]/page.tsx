@@ -30,8 +30,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const handleAddToCart = () => {
     addToCart(product);
     toast({
-      title: 'Added to cart',
-      description: `${product.name} has been added to your cart.`,
+      title: 'Ajouté au panier',
+      description: `${product.name} a été ajouté à votre panier.`,
     });
   };
 
@@ -75,22 +75,22 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className={`w-5 h-5 ${i < Math.round(product.reviews[0]?.rating || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground'}`} />
               ))}
-              <span className="text-sm text-muted-foreground ml-2">({product.reviews.length} reviews)</span>
+              <span className="text-sm text-muted-foreground ml-2">({product.reviews.length} avis)</span>
             </div>
           </div>
           <Button 
             size="lg" 
             onClick={handleAddToCart}
-            style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}
+            className="bg-accent text-accent-foreground hover:bg-accent/90"
           >
             <ShoppingCart className="mr-2 h-5 w-5" />
-            Add to Cart
+            Ajouter au panier
           </Button>
           <Separator />
           
           <Card>
             <CardHeader>
-              <CardTitle>Specifications</CardTitle>
+              <CardTitle>Spécifications</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
@@ -109,7 +109,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       </div>
       
       <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
+          <h2 className="text-2xl font-bold mb-4">Avis des clients</h2>
           <div className="space-y-6">
             {product.reviews.map((review, index) => (
               <Card key={index}>

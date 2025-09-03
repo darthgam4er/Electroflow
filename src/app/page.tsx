@@ -15,24 +15,72 @@ import { ArrowRight, Laptop, Smartphone, Watch } from 'lucide-react';
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
-  const laptopProducts = getProductsByCategory('Laptops');
 
   return (
     <div className="flex flex-col">
-      <section className="relative w-full py-16 md:py-24 lg:py-32 bg-secondary/50">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4 font-headline">
-              The Future of Tech, Today.
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8">
-              Discover the latest in electronics. Unbeatable prices, unmatched quality.
-            </p>
-            <Button asChild size="lg" style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}>
-              <Link href="/category/laptops">
-                Shop Now <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
+      <section className="w-full py-8 bg-background">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2">
+                <Carousel
+                opts={{
+                    align: 'start',
+                    loop: true,
+                }}
+                className="w-full"
+                >
+                <CarouselContent>
+                    <CarouselItem>
+                        <div className="relative w-full h-[400px]">
+                            <Image src="https://picsum.photos/seed/hero1/1200/400" alt="Summer freshness solution" fill className="object-cover rounded-lg" data-ai-hint="beach scene air conditioner"/>
+                             <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
+                             <div className="absolute top-1/2 left-12 -translate-y-1/2 text-white space-y-4">
+                                <h1 className="text-5xl font-bold uppercase" style={{color: '#FFD700'}}>Votre solution</h1>
+                                <p className="text-4xl font-light italic">fraîcheur</p>
+                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
+                                    <Link href="#">
+                                        J'en profite
+                                    </Link>
+                                </Button>
+                             </div>
+                        </div>
+                    </CarouselItem>
+                     <CarouselItem>
+                        <div className="relative w-full h-[400px]">
+                            <Image src="https://picsum.photos/seed/hero2/1200/400" alt="Tech deals" fill className="object-cover rounded-lg" data-ai-hint="modern living room technology"/>
+                            <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
+                             <div className="absolute top-1/2 left-12 -translate-y-1/2 text-white space-y-4">
+                                <h1 className="text-5xl font-bold uppercase">Nouvelles Offres</h1>
+                                <p className="text-2xl">Découvrez nos derniers produits.</p>
+                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
+                                    <Link href="/category/laptops">
+                                        Explorer
+                                    </Link>
+                                </Button>
+                             </div>
+                        </div>
+                    </CarouselItem>
+                </CarouselContent>
+                <CarouselPrevious className="left-4 hidden sm:flex"/>
+                <CarouselNext className="right-4 hidden sm:flex"/>
+                </Carousel>
+            </div>
+            <div className="space-y-4">
+                <Card className="bg-primary text-primary-foreground text-center p-6 flex flex-col items-center justify-center h-[240px] rounded-lg">
+                    <h2 className="text-5xl font-extrabold">PETIT</h2>
+                    <p className="text-4xl font-extrabold">PRIX</p>
+                    <ArrowRight className="mt-2 h-8 w-8"/>
+                </Card>
+                <Card className="p-4 flex flex-col justify-between h-[144px] rounded-lg">
+                    <div>
+                        <h3 className="font-bold text-lg">SUMMER WAVE</h3>
+                        <p className="text-sm text-muted-foreground">du 1er Août au 7 Sep 2025</p>
+                    </div>
+                    <div className="flex justify-end">
+                         <ArrowRight className="h-6 w-6"/>
+                    </div>
+                </Card>
+            </div>
           </div>
         </div>
       </section>
@@ -40,9 +88,9 @@ export default function Home() {
       <section className="w-full py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Featured Products</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Produits phares</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl lg:text-base xl:text-xl">
-              Check out our hand-picked selection of the best new tech.
+              Découvrez notre sélection des meilleures nouveautés technologiques.
             </p>
           </div>
           <div className="mx-auto max-w-6xl px-4 py-12">
@@ -68,30 +116,27 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      
       <section className="w-full py-16 md:py-24 bg-card">
          <div className="container mx-auto px-4 md:px-6">
            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Shop by Category</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Acheter par catégorie</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl lg:text-base xl:text-xl">
-              Find exactly what you're looking for.
+              Trouvez exactement ce que vous cherchez.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {[
-                { name: 'Laptops', href: '/category/laptops', icon: <Laptop className="w-10 h-10"/>, dataAiHint: "laptop" },
-                { name: 'Smartphones', href: '/category/smartphones', icon: <Smartphone className="w-10 h-10"/>, dataAiHint: "smartphone" },
-                { name: 'Tablets', href: '/category/tablets', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><line x1="12" x2="12" y1="18" y2="18"></line></svg>, dataAiHint: "tablet device" },
-                { name: 'Wearables', href: '/category/wearables', icon: <Watch className="w-10 h-10"/>, dataAiHint: "smartwatch" },
-                { name: 'Accessories', href: '/category/accessories', icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10"><path d="M12 2v4"></path><path d="M12 20v2"></path><path d="M20 12h2"></path><path d="M2 12h2"></path><circle cx="12" cy="12" r="8"></circle><path d="M12 8a4 4 0 1 0 4 4"></path></svg>, dataAiHint: "headphones" },
+                { name: 'Laptops', href: '/category/laptops' },
+                { name: 'Smartphones', href: '/category/smartphones' },
+                { name: 'Tablets', href: '/category/tablets' },
+                { name: 'Wearables', href: '/category/wearables' },
+                { name: 'Accessories', href: '/category/accessories' },
             ].map(category => (
                 <Link key={category.name} href={category.href}>
                 <Card className="group overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
-                    <CardContent className="p-6 flex flex-col items-center justify-center gap-4">
-                    <div className="text-primary transition-colors group-hover:text-accent">
-                        {category.icon}
-                    </div>
-                    <h3 className="text-lg font-semibold">{category.name}</h3>
+                    <CardContent className="p-6 flex flex-col items-center justify-center gap-4 min-h-[120px]">
+                      <h3 className="text-lg font-semibold text-center">{category.name}</h3>
                     </CardContent>
                 </Card>
                 </Link>
