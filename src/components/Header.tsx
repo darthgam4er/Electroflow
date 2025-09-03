@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
+    { href: '#', label: 'Back to school', special: true, highlighted: false },
     { href: '#', label: 'Offres Web', special: true, highlighted: true },
     { href: '#', label: 'Promos' },
     { href: '#', label: 'Nos marques' },

@@ -6,6 +6,8 @@ export interface Product {
   images: string[];
   category: string;
   featured?: boolean;
+  tag?: 'Promo' | 'Nouveau';
+  discount?: number; // e.g. 0.2 for 20%
   specs: Record<string, string>;
   reviews: {
     rating: number;

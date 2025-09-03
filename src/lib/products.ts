@@ -3,11 +3,13 @@ import type { Product } from '@/lib/types';
 export const products: Product[] = [
   {
     id: '1',
-    name: 'QuantumBook Pro X',
+    name: 'ASUS VIVOBOOK K X515SK 15',
     description:
       'The QuantumBook Pro X is the pinnacle of performance and design. With its next-gen processor and stunning Retina XDR display, it\'s the ultimate tool for creatives and professionals.',
-    price: 2499,
-    images: ['https://picsum.photos/seed/laptop1/800/600', 'https://picsum.photos/seed/laptop2/800/600', 'https://picsum.photos/seed/laptop3/800/600'],
+    price: 2699,
+    discount: 0.20,
+    tag: 'Promo',
+    images: ['https://picsum.photos/seed/laptop1/800/800', 'https://picsum.photos/seed/laptop2/800/800', 'https://picsum.photos/seed/laptop3/800/800'],
     category: 'Laptops',
     featured: true,
     specs: {
@@ -24,12 +26,14 @@ export const products: Product[] = [
   },
   {
     id: '2',
-    name: 'StellarPhone 12',
+    name: 'LENOVO IDEAPAD1 ISL JLT CEL N...',
     description:
       'Experience the future of mobile with the StellarPhone 12. Its advanced camera system, all-day battery life, and blazing fast 6G connectivity set a new standard.',
-    price: 1099,
-    images: ['https://picsum.photos/seed/phone1/800/600', 'https://picsum.photos/seed/phone2/800/600', 'https://picsum.photos/seed/phone3/800/600'],
-    category: 'Smartphones',
+    price: 3199,
+    discount: 0.13,
+    tag: 'Promo',
+    images: ['https://picsum.photos/seed/lenovo1/800/800', 'https://picsum.photos/seed/lenovo2/800/800', 'https://picsum.photos/seed/lenovo3/800/800'],
+    category: 'Laptops',
     featured: true,
     specs: {
       Processor: 'Stellar A18 Bionic',
@@ -45,11 +49,13 @@ export const products: Product[] = [
   },
   {
     id: '3',
-    name: 'SonicSurge Headphones',
+    name: 'ASUS PC ASUSVIVOB OOK G410K...',
     description: 'Immerse yourself in pure, high-fidelity audio with SonicSurge. Industry-leading noise cancellation and a 40-hour battery life let you escape into your music.',
-    price: 349,
-    images: ['https://picsum.photos/seed/audio1/800/600', 'https://picsum.photos/seed/audio2/800/600'],
-    category: 'Accessories',
+    price: 2699,
+    discount: 0.27,
+    tag: 'Promo',
+    images: ['https://picsum.photos/seed/asuspc1/800/800', 'https://picsum.photos/seed/asuspc2/800/800'],
+    category: 'Laptops',
     featured: true,
     specs: {
       'Audio Technology': 'Active Noise Cancellation, Spatial Audio',
@@ -61,12 +67,15 @@ export const products: Product[] = [
   },
   {
     id: '4',
-    name: 'AeroBook Air',
+    name: 'ASUS PC ASUS VIVOB OOK X15...',
     description:
       'Light as air, powerful as a storm. The AeroBook Air redefines portability without compromising on power, making it the perfect companion for those on the go.',
-    price: 1299,
-    images: ['https://picsum.photos/seed/laptop4/800/600', 'https://picsum.photos/seed/laptop5/800/600'],
+    price: 5999,
+    discount: 0.14,
+    tag: 'Nouveau',
+    images: ['https://picsum.photos/seed/laptop4/800/800', 'https://picsum.photos/seed/laptop5/800/800'],
     category: 'Laptops',
+    featured: true,
     specs: {
       CPU: 'Aero M3 Chip',
       RAM: '16GB Unified Memory',
@@ -77,12 +86,15 @@ export const products: Product[] = [
   },
   {
     id: '5',
-    name: 'PixelPerfect Tablet',
+    name: 'HP INTEL® CORE™ I5 P RO...',
     description:
       'Your digital canvas awaits. The PixelPerfect Tablet with its ultra-responsive stylus offers an unparalleled drawing and note-taking experience.',
-    price: 799,
-    images: ['https://picsum.photos/seed/tablet1/800/600', 'https://picsum.photos/seed/tablet2/800/600'],
-    category: 'Tablets',
+    price: 6799,
+    discount: 0.13,
+    tag: 'Promo',
+    images: ['https://picsum.photos/seed/hp1/800/800', 'https://picsum.photos/seed/hp2/800/800'],
+    category: 'Laptops',
+    featured: true,
     specs: {
       Processor: 'Octa-Core Graphics Pro',
       Display: '11-inch TrueTone Display',
@@ -93,11 +105,13 @@ export const products: Product[] = [
   },
   {
     id: '6',
-    name: 'ChronoWatch Series 8',
+    name: 'MSI MSI MODERN 14" I 5 123...',
     description: 'Stay connected, stay healthy. The ChronoWatch Series 8 tracks your fitness, monitors your health, and keeps you in touch with what matters most.',
-    price: 499,
-    images: ['https://picsum.photos/seed/watch1/800/600', 'https://picsum.photos/seed/watch2/800/600'],
-    category: 'Wearables',
+    price: 6499,
+    discount: 0.13,
+    tag: 'Promo',
+    images: ['https://picsum.photos/seed/msi1/800/800', 'https://picsum.photos/seed/msi2/800/800'],
+    category: 'Laptops',
     featured: true,
     specs: {
       Sensors: 'Heart Rate, Blood Oxygen, ECG',
