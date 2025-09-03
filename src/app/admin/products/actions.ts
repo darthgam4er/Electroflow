@@ -15,7 +15,6 @@ export async function getProducts() {
 export async function addProduct(productData: any) {
   try {
     const productsCol = collection(db, 'products');
-    // Ensure new products have a reviews array
     const dataWithReviews = {
       ...productData,
       reviews: productData.reviews || [],
@@ -29,5 +28,3 @@ export async function addProduct(productData: any) {
     return { success: false, error: 'Failed to add product' };
   }
 }
-
-    
