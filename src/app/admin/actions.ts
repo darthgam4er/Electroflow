@@ -1,7 +1,7 @@
 
 'use server';
 
-import { adminStorage } from "@/lib/firebase";
+import { adminStorage } from "@/lib/firebase-admin";
 import { v4 as uuidv4 } from 'uuid';
 
 export async function uploadFile(formData: FormData) {
