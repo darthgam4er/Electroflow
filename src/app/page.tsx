@@ -14,12 +14,18 @@ import { getFeaturedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import { ArrowRight } from 'lucide-react';
 import { HeroCarousel } from '@/components/HeroCarousel';
-import { getHomepageCategories, getSlides } from './admin/homepage/actions';
+import { getHomepageCategories, getSlides, getStaticBanners } from './admin/homepage/actions';
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
   const categories = await getHomepageCategories();
   const slides = await getSlides();
+  const staticBanners = await getStaticBanners();
+
+  // Helper function to get banner by section and position
+  const getBanner = (section: string, position: string) => {
+    return staticBanners.find(banner => banner.section === section && banner.position === position);
+  };
 
   return (
     <div className="flex flex-col">
@@ -35,7 +41,7 @@ export default async function Home() {
                     <p className="text-3xl md:text-4xl font-extrabold">PRIX</p>
                     <ArrowRight className="mt-2 h-8 w-8"/>
                 </Card>
-                <Card className="relative p-4 flex flex-col justify-between rounded-lg bg-cover bg-center min-h-[150px] sm:min-h-[144px]" style={{backgroundImage: "url('https://picsum.photos/seed/laptopbanner/400/144')"}} data-ai-hint="gaming laptop sale">
+                <Card className="relative p-4 flex flex-col justify-between rounded-lg bg-cover bg-center min-h-[150px] sm:min-h-[144px]" style={{backgroundImage: `url('${getBanner('appliances', 'left')?.imgSrc || 'https://picsum.photos/seed/laptopbanner/400/144'}')`}} data-ai-hint="gaming laptop sale">
                      <div className="bg-black/20 absolute inset-0 rounded-lg"></div>
                     <div className="relative z-10 text-white">
                         <h3 className="font-bold text-lg">SUMMER WAVE</h3>
@@ -90,14 +96,14 @@ export default async function Home() {
       <section className="w-full py-8">
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Link href="#" className="block rounded-lg overflow-hidden relative group">
+                <Link href={getBanner('appliances', 'left')?.link || '#'} className="block rounded-lg overflow-hidden relative group">
                     <Image 
-                      src="https://picsum.photos/seed/hisense/600/400" 
-                      width={600} 
-                      height={400} 
-                      alt="Hisense Products" 
+                      src={getBanner('appliances', 'left')?.imgSrc || 'https://picsum.photos/seed/hisense/600/400'} 
+                      width={getBanner('appliances', 'left')?.width || 600} 
+                      height={getBanner('appliances', 'left')?.height || 400} 
+                      alt={getBanner('appliances', 'left')?.alt || 'Hisense Products'} 
                       className="w-full h-auto" 
-                      data-ai-hint="Hisense smart tv appliance"
+                      data-ai-hint={getBanner('appliances', 'left')?.dataAiHint || 'Hisense smart tv appliance'}
                       loading="lazy"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
@@ -106,14 +112,14 @@ export default async function Home() {
                     </div>
                 </Link>
                 <div className="flex flex-col gap-4">
-                    <Link href="#" className="block rounded-lg overflow-hidden relative group">
+                    <Link href={getBanner('appliances', 'top')?.link || '#'} className="block rounded-lg overflow-hidden relative group">
                         <Image 
-                          src="https://picsum.photos/seed/ufesa/600/192" 
-                          width={600} 
-                          height={192} 
-                          alt="Ufesa Products" 
+                          src={getBanner('appliances', 'top')?.imgSrc || 'https://picsum.photos/seed/ufesa/600/192'} 
+                          width={getBanner('appliances', 'top')?.width || 600} 
+                          height={getBanner('appliances', 'top')?.height || 192} 
+                          alt={getBanner('appliances', 'top')?.alt || 'Ufesa Products'} 
                           className="w-full h-auto object-cover" 
-                          data-ai-hint="kitchen appliances grill"
+                          data-ai-hint={getBanner('appliances', 'top')?.dataAiHint || 'kitchen appliances grill'}
                           loading="lazy"
                           sizes="(max-width: 768px) 100vw, 50vw"
                         />
@@ -121,14 +127,14 @@ export default async function Home() {
                             <ArrowRight className="h-6 w-6 text-primary" />
                         </div>
                     </Link>
-                    <Link href="#" className="block rounded-lg overflow-hidden relative group">
+                    <Link href={getBanner('appliances', 'bottom')?.link || '#'} className="block rounded-lg overflow-hidden relative group">
                         <Image 
-                          src="https://picsum.photos/seed/elexia/600/192" 
-                          width={600} 
-                          height={192} 
-                          alt="Elexia Products" 
+                          src={getBanner('appliances', 'bottom')?.imgSrc || 'https://picsum.photos/seed/elexia/600/192'} 
+                          width={getBanner('appliances', 'bottom')?.width || 600} 
+                          height={getBanner('appliances', 'bottom')?.height || 192} 
+                          alt={getBanner('appliances', 'bottom')?.alt || 'Elexia Products'} 
                           className="w-full h-auto object-cover" 
-                          data-ai-hint="kettle toaster mixer"
+                          data-ai-hint={getBanner('appliances', 'bottom')?.dataAiHint || 'kettle toaster mixer'}
                           loading="lazy"
                           sizes="(max-width: 768px) 100vw, 50vw"
                         />
@@ -144,26 +150,26 @@ export default async function Home() {
       <section className="w-full py-8">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Link href="#" className="block">
+            <Link href={getBanner('gaming', 'left')?.link || '#'} className="block">
               <Image 
-                src="https://picsum.photos/seed/keyboard-sale/600/150" 
-                alt="Gaming Keyboards" 
-                width={600} 
-                height={150} 
+                src={getBanner('gaming', 'left')?.imgSrc || 'https://picsum.photos/seed/keyboard-sale/600/150'} 
+                alt={getBanner('gaming', 'left')?.alt || 'Gaming Keyboards'} 
+                width={getBanner('gaming', 'left')?.width || 600} 
+                height={getBanner('gaming', 'left')?.height || 150} 
                 className="w-full h-auto rounded-lg" 
-                data-ai-hint="gaming keyboard"
+                data-ai-hint={getBanner('gaming', 'left')?.dataAiHint || 'gaming keyboard'}
                 loading="lazy"
                 sizes="(max-width: 640px) 100vw, 50vw"
               />
             </Link>
-            <Link href="#" className="block">
+            <Link href={getBanner('gaming', 'right')?.link || '#'} className="block">
               <Image 
-                src="https://picsum.photos/seed/laptop-offers/600/150" 
-                alt="Laptop Offers" 
-                width={600} 
-                height={150} 
+                src={getBanner('gaming', 'right')?.imgSrc || 'https://picsum.photos/seed/laptop-offers/600/150'} 
+                alt={getBanner('gaming', 'right')?.alt || 'Laptop Offers'} 
+                width={getBanner('gaming', 'right')?.width || 600} 
+                height={getBanner('gaming', 'right')?.height || 150} 
                 className="w-full h-auto rounded-lg" 
-                data-ai-hint="laptop sale"
+                data-ai-hint={getBanner('gaming', 'right')?.dataAiHint || 'laptop sale'}
                 loading="lazy"
                 sizes="(max-width: 640px) 100vw, 50vw"
               />
@@ -171,7 +177,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
 
       <section className="w-full py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
@@ -217,11 +222,11 @@ export default async function Home() {
                 <p className="text-2xl mt-2">À seulement <span className="font-bold">8 590 MAD.</span></p>
                 <div className="mt-6 flex justify-center md:justify-start">
                     <Image 
-                      src="https://picsum.photos/seed/maclogo/150/40" 
-                      alt="MacBook Air Logo" 
-                      width={150} 
-                      height={40} 
-                      data-ai-hint="apple logo"
+                      src={getBanner('macbook', 'left')?.imgSrc || 'https://picsum.photos/seed/maclogo/150/40'} 
+                      alt={getBanner('macbook', 'left')?.alt || 'MacBook Air Logo'} 
+                      width={getBanner('macbook', 'left')?.width || 150} 
+                      height={getBanner('macbook', 'left')?.height || 40} 
+                      data-ai-hint={getBanner('macbook', 'left')?.dataAiHint || 'apple logo'}
                       loading="lazy"
                       sizes="150px"
                     />
@@ -229,11 +234,11 @@ export default async function Home() {
               </div>
                <div className="relative h-64 md:h-full min-h-[300px]">
                   <Image 
-                    src="https://picsum.photos/seed/macbook/600/400" 
-                    alt="Macbook Air" 
+                    src={getBanner('macbook', 'right')?.imgSrc || 'https://picsum.photos/seed/macbook/600/400'} 
+                    alt={getBanner('macbook', 'right')?.alt || 'Macbook Air'} 
                     fill 
                     className="object-cover"
-                    data-ai-hint="macbook air laptop"
+                    data-ai-hint={getBanner('macbook', 'right')?.dataAiHint || 'macbook air laptop'}
                     loading="lazy"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />

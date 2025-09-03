@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getSlides, getHomepageCategories } from './actions';
-import type { HeroSlide, HomepageCategory } from '@/lib/types';
+import { getSlides, getHomepageCategories, getStaticBanners } from './actions';
+import type { HeroSlide, HomepageCategory, StaticBanner } from '@/lib/types';
 import { DeleteCategoryButton } from './DeleteCategoryButton';
 import { DeleteSlideButton } from './DeleteSlideButton';
 import { SeedDatabaseButton } from './SeedDatabaseButton';
@@ -12,6 +12,7 @@ import { SeedDatabaseButton } from './SeedDatabaseButton';
 export default async function AdminHomepagePage() {
   const slides = await getSlides();
   const categories = await getHomepageCategories();
+  const staticBanners = await getStaticBanners();
 
   return (
     <div className="flex flex-col gap-6">
@@ -135,13 +136,75 @@ export default async function AdminHomepagePage() {
         </CardContent>
       </Card>
 
+      {/* Static Banners Management */}
+      <Card>
+        <CardHeader className="flex flex-row justify-between items-center">
+          <CardTitle>Static Banners</CardTitle>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/admin/homepage/banners/new">Add Banner</Link>
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground mb-4">
+            Manage the static banner images displayed throughout the homepage (appliances, gaming, MacBook sections).
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {staticBanners.length > 0 ? (
+              staticBanners.map((banner) => (
+                <div key={banner.id} className="flex items-center gap-4 p-4 border rounded-lg bg-card hover:bg-accent/50 transition-colors">
+                  <div className="flex-shrink-0">
+                    <Image 
+                      src={banner.imgSrc} 
+                      width={80} 
+                      height={60} 
+                      alt={banner.alt} 
+                      className="rounded-md object-cover h-[60px] w-[80px] border-2 border-border"
+                    />
+                  </div>
+                  <div className="flex-grow min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">
+                        {banner.section}
+                      </span>
+                      <span className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded">
+                        {banner.position}
+                      </span>
+                    </div>
+                    <h3 className="font-semibold text-lg truncate">{banner.name}</h3>
+                    <p className="text-sm text-muted-foreground truncate">{banner.alt}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {banner.width} × {banner.height}px
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/admin/homepage/banners/${banner.id}/edit`}>Edit</Link>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/admin/homepage/banners/${banner.id}/delete`}>Delete</Link>
+                    </Button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-8 border-2 border-dashed rounded-lg">
+                <p className="text-muted-foreground mb-2">No static banners found</p>
+                <Button asChild>
+                  <Link href="/admin/homepage/banners/new">Create Your First Banner</Link>
+                </Button>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Quick Actions */}
       <Card>
         <CardHeader>
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Button variant="outline" asChild className="h-auto p-4 flex flex-col items-center gap-2">
               <Link href="/admin/homepage/slides/new">
                 <span className="text-2xl">🖼️</span>
@@ -158,6 +221,16 @@ export default async function AdminHomepagePage() {
                 <span className="font-semibold">Add Category</span>
                 <span className="text-sm text-muted-foreground text-center">
                   Add a new featured category
+                </span>
+              </Link>
+            </Button>
+            
+            <Button variant="outline" asChild className="h-auto p-4 flex flex-col items-center gap-2">
+              <Link href="/admin/homepage/banners/new">
+                <span className="text-2xl">🎯</span>
+                <span className="font-semibold">Add Banner</span>
+                <span className="text-sm text-muted-foreground text-center">
+                  Add a new static banner
                 </span>
               </Link>
             </Button>

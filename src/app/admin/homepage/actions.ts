@@ -180,7 +180,6 @@ export async function deleteHomepageCategory(id: string) {
     }
 }
 
-// --- Database Seeding Function ---
 export async function seedDatabase() {
     try {
         console.log('🌱 Starting database seeding...');
@@ -207,6 +206,17 @@ export async function seedDatabase() {
             }
         }
         
+        // Check if static banners already exist
+        const existingBanners = await getStaticBanners();
+        if (existingBanners.length === 0) {
+            // Add static banners
+            console.log('🖼️ Adding static banners...');
+            for (const banner of initialStaticBanners) {
+                await addDoc(collection(db, 'staticBanners'), banner);
+                console.log(`✅ Added banner: ${banner.name}`);
+            }
+        }
+        
         revalidatePath('/admin/homepage');
         revalidatePath('/');
         
@@ -214,10 +224,147 @@ export async function seedDatabase() {
             success: true, 
             message: 'Database seeded successfully!',
             slidesAdded: existingSlides.length === 0 ? initialSlides.length : 0,
-            categoriesAdded: existingCategories.length === 0 ? initialHomepageCategories.length : 0
+            categoriesAdded: existingCategories.length === 0 ? initialHomepageCategories.length : 0,
+            bannersAdded: existingBanners.length === 0 ? initialStaticBanners.length : 0
         };
     } catch (error) {
         console.error('❌ Error seeding database:', error);
         return { success: false, error: 'Failed to seed database' };
+    }
+}
+
+// --- Static Banners Actions ---
+
+const initialStaticBanners: Omit<StaticBanner, 'id'>[] = [
+    {
+        name: 'Hisense Appliances',
+        imgSrc: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
+        alt: 'Hisense Products',
+        width: 600,
+        height: 400,
+        link: '#',
+        dataAiHint: 'Hisense smart tv appliance',
+        section: 'appliances',
+        position: 'left'
+    },
+    {
+        name: 'Ufesa Kitchen',
+        imgSrc: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=192&fit=crop',
+        alt: 'Ufesa Products',
+        width: 600,
+        height: 192,
+        link: '#',
+        dataAiHint: 'kitchen appliances grill',
+        section: 'appliances',
+        position: 'top'
+    },
+    {
+        name: 'Elexia Small Appliances',
+        imgSrc: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=192&fit=crop',
+        alt: 'Elexia Products',
+        width: 600,
+        height: 192,
+        link: '#',
+        dataAiHint: 'kettle toaster mixer',
+        section: 'appliances',
+        position: 'bottom'
+    },
+    {
+        name: 'Gaming Keyboards',
+        imgSrc: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=600&h=150&fit=crop',
+        alt: 'Gaming Keyboards',
+        width: 600,
+        height: 150,
+        link: '#',
+        dataAiHint: 'gaming keyboard',
+        section: 'gaming',
+        position: 'left'
+    },
+    {
+        name: 'Laptop Offers',
+        imgSrc: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=150&fit=crop',
+        alt: 'Laptop Offers',
+        width: 600,
+        height: 150,
+        link: '#',
+        dataAiHint: 'laptop sale',
+        section: 'gaming',
+        position: 'right'
+    },
+    {
+        name: 'MacBook Air',
+        imgSrc: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=400&fit=crop',
+        alt: 'Macbook Air',
+        width: 600,
+        height: 400,
+        link: '#',
+        dataAiHint: 'macbook air laptop',
+        section: 'macbook',
+        position: 'right'
+    },
+    {
+        name: 'Apple Logo',
+        imgSrc: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=150&h=40&fit=crop',
+        alt: 'MacBook Air Logo',
+        width: 150,
+        height: 40,
+        link: '#',
+        dataAiHint: 'apple logo',
+        section: 'macbook',
+        position: 'left'
+    }
+];
+
+export async function getStaticBanners(): Promise<StaticBanner[]> {
+    const bannersCol = collection(db, 'staticBanners');
+    const bannerSnapshot = await getDocs(bannersCol);
+    return bannerSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as StaticBanner));
+}
+
+export async function addStaticBanner(data: Omit<StaticBanner, 'id'>) {
+    try {
+        await addDoc(collection(db, 'staticBanners'), data);
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error adding banner: ", error);
+        return { success: false, error: 'Failed to add banner' };
+    }
+}
+
+export async function getStaticBannerById(id: string): Promise<StaticBanner | null> {
+    const docRef = doc(db, 'staticBanners', id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() } as StaticBanner;
+    } else {
+        return null;
+    }
+}
+
+export async function updateStaticBanner(id: string, data: Partial<Omit<StaticBanner, 'id'>>) {
+    try {
+        const docRef = doc(db, 'staticBanners', id);
+        await updateDoc(docRef, data);
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating banner: ", error);
+        return { success: false, error: 'Failed to update banner' };
+    }
+}
+
+export async function deleteStaticBanner(id: string) {
+    try {
+        await deleteDoc(doc(db, 'staticBanners', id));
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting banner: ", error);
+        return { success: false, error: 'Failed to delete banner' };
     }
 }

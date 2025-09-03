@@ -42,3 +42,16 @@ export interface HomepageCategory {
     imgSrc: string;
     dataAiHint?: string;
 }
+
+export interface StaticBanner {
+  id: string;
+  name: string;
+  imgSrc: string;
+  alt: string;
+  width: number;
+  height: number;
+  link?: string;
+  dataAiHint?: string;
+  section: 'appliances' | 'gaming' | 'macbook';
+  position: 'left' | 'right' | 'top' | 'bottom';
+}
