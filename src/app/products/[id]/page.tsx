@@ -1,4 +1,3 @@
-'use client';
 
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -14,59 +13,17 @@ import {
 } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import { Star, ShoppingCart } from 'lucide-react';
-import { useCart } from '@/context/CartContext';
-import { useToast } from '@/hooks/use-toast';
 import { ProductRecommendations } from '@/components/ProductRecommendations';
-import { useEffect, useState } from 'react';
 import type { Product } from '@/lib/types';
-import { Skeleton } from '@/components/ui/skeleton';
-
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { addToCart } = useCart();
-  const { toast } = useToast();
-
-  useEffect(() => {
-    async function loadProduct() {
-      setLoading(true);
-      const fetchedProduct = await getProductById(params.id);
-      if (!fetchedProduct) {
-        notFound();
-      }
-      setProduct(fetchedProduct);
-      setLoading(false);
-    }
-    loadProduct();
-  }, [params.id]);
+import { AddToCartButton } from './AddToCartButton';
 
 
-  if (loading || !product) {
-    return (
-        <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
-            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-                <div>
-                    <Skeleton className="aspect-square w-full rounded-lg" />
-                </div>
-                <div className="flex flex-col gap-6">
-                    <Skeleton className="h-10 w-3/4" />
-                    <Skeleton className="h-6 w-1/4" />
-                    <Skeleton className="h-20 w-full" />
-                    <Skeleton className="h-10 w-1/2" />
-                    <Skeleton className="h-12 w-full" />
-                </div>
-            </div>
-        </div>
-    )
+export default async function ProductDetailPage({ params }: { params: { id: string } }) {
+  const product = await getProductById(params.id);
+
+  if (!product) {
+    notFound();
   }
-
-  const handleAddToCart = () => {
-    addToCart(product);
-    toast({
-      title: 'Ajouté au panier',
-      description: `${product.name} a été ajouté à votre panier.`,
-    });
-  };
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
@@ -111,14 +68,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               <span className="text-sm text-muted-foreground ml-2">({product.reviews.length} avis)</span>
             </div>
           </div>
-          <Button 
-            size="lg" 
-            onClick={handleAddToCart}
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
-          >
-            <ShoppingCart className="mr-2 h-5 w-5" />
-            Ajouter au panier
-          </Button>
+          <AddToCartButton product={product} />
           <Separator />
           
           <Card>

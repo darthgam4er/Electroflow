@@ -1,65 +1,16 @@
 
-'use client';
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { getSlides, getHomepageCategories, deleteHomepageCategory } from './actions';
 import type { HeroSlide, HomepageCategory } from '@/lib/types';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Trash2 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+import { DeleteCategoryButton } from './DeleteCategoryButton';
 
-export default function AdminHomepagePage() {
-  const [slides, setSlides] = useState<HeroSlide[]>([]);
-  const [categories, setCategories] = useState<HomepageCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  async function loadData() {
-    setLoading(true);
-    const [fetchedSlides, fetchedCategories] = await Promise.all([
-        getSlides(),
-        getHomepageCategories()
-    ]);
-    
-    setSlides(fetchedSlides);
-    setCategories(fetchedCategories);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const handleDeleteCategory = async (id: string) => {
-    const result = await deleteHomepageCategory(id);
-     if (result.success) {
-        toast({
-            title: "Category Deleted",
-            description: "The category has been deleted successfully.",
-        });
-        loadData(); // Reload data
-    } else {
-        toast({
-            title: "Error",
-            description: result.error,
-            variant: "destructive",
-        });
-    }
-  }
+export default async function AdminHomepagePage() {
+  const slides = await getSlides();
+  const categories = await getHomepageCategories();
 
   return (
     <div className="flex flex-col gap-6">
@@ -75,15 +26,7 @@ export default function AdminHomepagePage() {
             Manage the slides in your main homepage carousel.
           </p>
           <div className="space-y-4">
-            {loading ? (
-              Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-4 p-2 border rounded-md">
-                  <Skeleton className="h-[50px] w-[100px] rounded-md"/>
-                  <Skeleton className="h-4 w-48 flex-grow" />
-                  <Skeleton className="h-8 w-16" />
-                </div>
-              ))
-            ) : slides.length > 0 ? (
+            {slides.length > 0 ? (
               slides.map((slide) => (
                 <div key={slide.id} className="flex items-center gap-4 p-2 border rounded-md">
                   <Image src={slide.imgSrc} width={100} height={50} alt={slide.alt} className="rounded-md object-cover h-[50px] w-[100px]"/>
@@ -113,16 +56,7 @@ export default function AdminHomepagePage() {
             Manage the category icons displayed on the homepage.
           </p>
           <div className="space-y-4">
-            {loading ? (
-              Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-4 p-2 border rounded-md">
-                  <Skeleton className="h-10 w-10 rounded-full"/>
-                  <Skeleton className="h-4 w-48 flex-grow" />
-                  <Skeleton className="h-8 w-16" />
-                   <Skeleton className="h-8 w-8" />
-                </div>
-              ))
-            ) : categories.length > 0 ? (
+           {categories.length > 0 ? (
               categories.map((category) => (
                 <div key={category.id} className="flex items-center gap-4 p-2 border rounded-md">
                    <Image src={category.imgSrc} width={40} height={40} alt={category.name} className="rounded-full object-cover h-10 w-10"/>
@@ -130,26 +64,7 @@ export default function AdminHomepagePage() {
                   <Button variant="outline" size="sm" asChild>
                     <Link href={`/admin/homepage/categories/${category.id}/edit`}>Edit</Link>
                   </Button>
-                  <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                          <Button variant="destructive" size="icon">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                          <AlertDialogHeader>
-                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                  This action cannot be undone. This will permanently delete the category
-                                  from the homepage.
-                              </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDeleteCategory(category.id)}>Delete</AlertDialogAction>
-                          </AlertDialogFooter>
-                      </AlertDialogContent>
-                  </AlertDialog>
+                  <DeleteCategoryButton id={category.id} />
                 </div>
               ))
             ) : (

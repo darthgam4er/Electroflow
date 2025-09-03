@@ -14,11 +14,12 @@ import { getFeaturedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import { ArrowRight } from 'lucide-react';
 import { HeroCarousel } from '@/components/HeroCarousel';
-import { getHomepageCategories } from './admin/homepage/actions';
+import { getHomepageCategories, getSlides } from './admin/homepage/actions';
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
   const categories = await getHomepageCategories();
+  const slides = await getSlides();
 
   return (
     <div className="flex flex-col">
@@ -26,7 +27,7 @@ export default async function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2">
-                <HeroCarousel />
+                <HeroCarousel slides={slides} />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
                 <Card className="bg-primary text-primary-foreground text-center p-6 flex flex-col items-center justify-center rounded-lg min-h-[150px] sm:min-h-[240px]">

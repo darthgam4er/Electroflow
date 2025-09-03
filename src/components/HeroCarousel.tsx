@@ -14,26 +14,17 @@ import {
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { getSlides } from '@/app/admin/homepage/actions';
 import type { HeroSlide } from '@/lib/types';
 import { Skeleton } from './ui/skeleton';
 
-export function HeroCarousel() {
+interface HeroCarouselProps {
+    slides: HeroSlide[];
+}
+
+export function HeroCarousel({ slides }: HeroCarouselProps) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
-  const [slides, setSlides] = React.useState<HeroSlide[]>([]);
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    async function loadSlides() {
-      setLoading(true);
-      const fetchedSlides = await getSlides();
-      setSlides(fetchedSlides);
-      setLoading(false);
-    }
-    loadSlides();
-  }, []);
-
+ 
   React.useEffect(() => {
     if (!api) {
       return;
@@ -51,8 +42,8 @@ export function HeroCarousel() {
       api.off('select', onSelect);
     };
   }, [api]);
-
-  if (loading) {
+  
+  if (!slides || slides.length === 0) {
     return <Skeleton className="w-full h-[250px] md:h-[400px] rounded-lg" />;
   }
 
@@ -60,14 +51,14 @@ export function HeroCarousel() {
     <div className="relative">
       <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
         <CarouselContent>
-          {slides.map((slide) => (
+          {slides.map((slide, index) => (
             <CarouselItem key={slide.id}>
               <div className="relative w-full h-[250px] md:h-[400px]">
                 <Image
                   src={slide.imgSrc}
                   alt={slide.alt}
                   fill
-                  priority={slides.indexOf(slide) === 0}
+                  priority={index === 0}
                   className="object-cover rounded-lg"
                   data-ai-hint={slide.dataAiHint}
                 />
