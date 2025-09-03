@@ -14,8 +14,8 @@ import { getFeaturedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import { ArrowRight, Smartphone, Tv, WashingMachine, Fan, Watch, Drill } from 'lucide-react';
 
-export default function Home() {
-  const featuredProducts = getFeaturedProducts();
+export default async function Home() {
+  const featuredProducts = await getFeaturedProducts();
 
   const categories = [
     { name: 'Smartphone', href: '/category/smartphones', icon: <Smartphone className="h-10 w-10 text-muted-foreground group-hover:text-primary" /> },

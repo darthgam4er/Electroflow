@@ -9,11 +9,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const products = getProductsByCategory(params.slug);
+export default async function CategoryPage({ params }: { params: { slug: string } }) {
+  const products = await getProductsByCategory(params.slug);
 
   if (products.length === 0) {
-    notFound();
+    // We don't call notFound() here because the category might exist but have no products.
+    // Instead, we show a message to the user.
   }
   
   const categoryName = params.slug.charAt(0).toUpperCase() + params.slug.slice(1);
@@ -21,11 +22,15 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   return (
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <h1 className="text-3xl md:text-4xl font-bold mb-8 font-headline">{categoryName}</h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {products.length > 0 ? (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <p>No products found in this category.</p>
+      )}
     </div>
   );
 }

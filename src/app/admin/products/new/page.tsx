@@ -22,6 +22,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "@/hooks/use-toast"
 import { Trash2 } from "lucide-react"
+import { addProduct } from "../actions";
+import { useRouter } from "next/navigation";
 
 const productSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -37,6 +39,7 @@ const productSchema = z.object({
 type ProductFormValues = z.infer<typeof productSchema>
 
 export default function NewProductPage() {
+  const router = useRouter();
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -62,16 +65,33 @@ export default function NewProductPage() {
   });
 
 
-  function onSubmit(data: ProductFormValues) {
-    console.log(data)
-    toast({
-      title: "Product Submitted (Demo)",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  async function onSubmit(data: ProductFormValues) {
+    const productData = {
+        ...data,
+        images: data.images.map(img => img.url),
+        specs: data.specs.reduce((acc, spec) => {
+            if(spec.key) acc[spec.key] = spec.value;
+            return acc;
+        }, {} as Record<string, string>),
+        // Add a default empty reviews array for new products
+        reviews: [], 
+    };
+    
+    const result = await addProduct(productData);
+
+    if (result.success) {
+        toast({
+            title: "Product Added",
+            description: "The new product has been saved successfully.",
+        });
+        router.push('/admin/products');
+    } else {
+        toast({
+            title: "Error",
+            description: result.error,
+            variant: "destructive",
+        })
+    }
   }
 
   return (
@@ -230,7 +250,7 @@ export default function NewProductPage() {
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a category" />
-                                        </SelectTrigger>
+                                        </Trigger>
                                         </FormControl>
                                         <SelectContent>
                                         <SelectItem value="Laptops">Laptops</SelectItem>
@@ -261,7 +281,7 @@ export default function NewProductPage() {
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a tag (optional)" />
-                                        </SelectTrigger>
+                                        </Trigger>
                                         </FormControl>
                                         <SelectContent>
                                           <SelectItem value="">None</SelectItem>
