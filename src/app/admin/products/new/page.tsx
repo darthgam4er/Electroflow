@@ -52,7 +52,7 @@ export default function NewProductPage() {
       tag: '',
       discount: 0,
     },
-  })
+  });
 
   const { fields: imageFields, append: appendImage, remove: removeImage } = useFieldArray({
     control: form.control,
@@ -228,7 +228,7 @@ export default function NewProductPage() {
                 </div>
                 <div className="lg:col-span-1 space-y-8">
                      <Card>
-                        <CardHeader><CardTitle>Pricing & Category</CardTitle></CardHeader>
+                        <CardHeader><CardTitle>Pricing &amp; Category</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <FormField
                                 control={form.control}
@@ -253,7 +253,7 @@ export default function NewProductPage() {
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a category" />
-                                        </Trigger>
+                                        </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
                                         <SelectItem value="Laptops">Laptops</SelectItem>
@@ -272,7 +272,7 @@ export default function NewProductPage() {
                      </Card>
 
                      <Card>
-                        <CardHeader><CardTitle>Tags & Discounts</CardTitle></CardHeader>
+                        <CardHeader><CardTitle>Tags &amp; Discounts</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                            <FormField
                                 control={form.control}
@@ -284,7 +284,7 @@ export default function NewProductPage() {
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a tag (optional)" />
-                                        </Trigger>
+                                        </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
                                           <SelectItem value="">None</SelectItem>
@@ -324,4 +324,5 @@ export default function NewProductPage() {
         </Form>
     </div>
   )
-}
+
+    
