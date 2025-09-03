@@ -12,7 +12,8 @@ import {
 } from '@/components/ui/carousel';
 import { getFeaturedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
-import { ArrowRight, Smartphone, Tv, WashingMachine, Fan, Watch, Drill } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { HeroCarousel } from '@/components/HeroCarousel';
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
@@ -32,64 +33,7 @@ export default async function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2">
-                <Carousel
-                opts={{
-                    align: 'start',
-                    loop: true,
-                }}
-                className="w-full"
-                >
-                <CarouselContent>
-                    <CarouselItem>
-                        <div className="relative w-full h-[250px] md:h-[400px]">
-                            <Image src="https://picsum.photos/seed/laptops/1200/400" alt="Back to school" fill className="object-cover rounded-lg" data-ai-hint="laptops on desk"/>
-                             <div className="absolute inset-0 bg-primary/80 rounded-lg"></div>
-                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center space-y-1 md:space-y-2 w-full px-4">
-                                <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold" style={{fontFamily: "'Arial Black', Gadget, sans-serif"}}>BACK TO SCHOOL</h1>
-                                <p className="text-lg sm:text-xl md:text-2xl font-light">UNE RENTRÉE PARFAITE...</p>
-                                <p className="text-xl sm:text-2xl md:text-3xl font-bold">CHEZ ELECTROPLANET</p>
-                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full mt-2 md:mt-4 !px-6 md:!px-8 text-sm md:text-base">
-                                    <Link href="#">
-                                        J'en profite
-                                    </Link>
-                                </Button>
-                             </div>
-                        </div>
-                    </CarouselItem>
-                     <CarouselItem>
-                        <div className="relative w-full h-[250px] md:h-[400px]">
-                            <Image src="https://picsum.photos/seed/laptopdeal/1200/400" alt="Offres technologiques" fill className="object-cover rounded-lg" data-ai-hint="person using laptop"/>
-                            <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
-                             <div className="absolute top-1/2 left-6 md:left-12 -translate-y-1/2 text-white space-y-2 md:space-y-4">
-                                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase">Nouvelles Offres</h1>
-                                <p className="text-lg sm:text-xl md:text-2xl">Découvrez nos derniers produits.</p>
-                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 text-sm md:text-base">
-                                    <Link href="/category/laptops">
-                                        Explorer
-                                    </Link>
-                                </Button>
-                             </div>
-                        </div>
-                    </CarouselItem>
-                    <CarouselItem>
-                        <div className="relative w-full h-[250px] md:h-[400px]">
-                            <Image src="https://picsum.photos/seed/phone-sale/1200/400" alt="Vente de téléphones" fill className="object-cover rounded-lg" data-ai-hint="smartphone sale"/>
-                            <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
-                             <div className="absolute bottom-10 right-10 text-white text-right space-y-2">
-                                <h2 className="text-2xl md:text-4xl font-bold">Les derniers smartphones</h2>
-                                <p className="text-md md:text-xl">À des prix imbattables.</p>
-                                <Button asChild variant="secondary">
-                                    <Link href="/category/smartphones">
-                                        Voir les offres
-                                    </Link>
-                                </Button>
-                             </div>
-                        </div>
-                    </CarouselItem>
-                </CarouselContent>
-                <CarouselPrevious className="left-4 hidden sm:flex"/>
-                <CarouselNext className="right-4 hidden sm:flex"/>
-                </Carousel>
+                <HeroCarousel />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
                 <Card className="bg-primary text-primary-foreground text-center p-6 flex flex-col items-center justify-center rounded-lg min-h-[150px] sm:min-h-[240px]">
