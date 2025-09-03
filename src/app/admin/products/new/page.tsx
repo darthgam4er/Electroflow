@@ -70,7 +70,9 @@ export default function NewProductPage() {
         ...data,
         images: data.images.map(img => img.url),
         specs: data.specs.reduce((acc, spec) => {
-            if(spec.key) acc[spec.key] = spec.value;
+            if(spec.key) {
+                acc[spec.key] = spec.value;
+            }
             return acc;
         }, {} as Record<string, string>),
         // Add a default empty reviews array for new products
@@ -277,7 +279,7 @@ export default function NewProductPage() {
                                 render={({ field }) => (
                                     <FormItem>
                                     <FormLabel>Tag</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValuechange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a tag (optional)" />
