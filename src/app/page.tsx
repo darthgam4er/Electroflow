@@ -130,14 +130,14 @@ export default async function Home() {
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Link href="#" className="block rounded-lg overflow-hidden">
-                    <Image src="https://picsum.photos/seed/laptopad1/600/300" width={600} height={300} alt="Hisense" className="w-full h-auto" data-ai-hint="laptop on clean desk" />
+                    <Image src="https://picsum.photos/seed/newlaptops/600/300" width={600} height={300} alt="New Laptops" className="w-full h-auto" data-ai-hint="new laptops" />
                 </Link>
                 <div className="flex flex-col gap-4">
                     <Link href="#" className="block rounded-lg overflow-hidden">
-                        <Image src="https://picsum.photos/seed/laptopad2/600/142" width={600} height={142} alt="Ufesa" className="w-full h-auto" data-ai-hint="thin laptop side view" />
+                        <Image src="https://picsum.photos/seed/phones/600/142" width={600} height={142} alt="Smartphones" className="w-full h-auto" data-ai-hint="smartphones" />
                     </Link>
                     <Link href="#" className="block rounded-lg overflow-hidden">
-                        <Image src="https://picsum.photos/seed/laptopad3/600/142" width={600} height={142} alt="Elexia" className="w-full h-auto" data-ai-hint="person typing on laptop" />
+                        <Image src="https://picsum.photos/seed/tablets/600/142" width={600} height={142} alt="Tablets" className="w-full h-auto" data-ai-hint="tablets" />
                     </Link>
                 </div>
             </div>
@@ -148,10 +148,10 @@ export default async function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="#" className="block">
-              <Image src="https://picsum.photos/seed/keyboard/600/150" alt="Rapoo" width={600} height={150} className="w-full h-auto rounded-lg" data-ai-hint="keyboard mouse sale" />
+              <Image src="https://picsum.photos/seed/keyboard-sale/600/150" alt="Gaming Keyboards" width={600} height={150} className="w-full h-auto rounded-lg" data-ai-hint="gaming keyboard" />
             </Link>
             <Link href="#" className="block">
-              <Image src="https://picsum.photos/seed/asus/600/150" alt="Asus" width={600} height={150} className="w-full h-auto rounded-lg" data-ai-hint="laptop sale" />
+              <Image src="https://picsum.photos/seed/laptop-offers/600/150" alt="Laptop Offers" width={600} height={150} className="w-full h-auto rounded-lg" data-ai-hint="laptop sale" />
             </Link>
           </div>
         </div>
@@ -220,5 +220,3 @@ export default async function Home() {
     </div>
   );
 }
-
-    
