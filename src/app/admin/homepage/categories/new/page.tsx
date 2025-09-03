@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
-import { addHomepageCategory } from "../actions"
+import { addHomepageCategory } from "../../actions"
 import { useRouter } from "next/navigation"
 
 const categorySchema = z.object({
