@@ -18,17 +18,17 @@ export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
 
   const categories = [
-    { name: 'Smartphone', href: '/category/smartphones', icon: <Smartphone className="h-10 w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Téléviseur', href: '/category/televisions', icon: <Tv className="h-10 w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Gros électroménager', href: '/category/appliances', icon: <WashingMachine className="h-10 w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Aspirateur', href: '/category/vacuums', icon: <Fan className="h-10 w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Montre connectée', href: '/category/wearables', icon: <Watch className="h-10 w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Machine à laver', href: '/category/washing-machines', icon: <Drill className="h-10 w-10 text-muted-foreground group-hover:text-primary" /> },
+    { name: 'Smartphone', href: '/category/smartphones', icon: <Smartphone className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
+    { name: 'Téléviseur', href: '/category/televisions', icon: <Tv className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
+    { name: 'Gros électroménager', href: '/category/appliances', icon: <WashingMachine className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
+    { name: 'Aspirateur', href: '/category/vacuums', icon: <Fan className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
+    { name: 'Montre connectée', href: '/category/wearables', icon: <Watch className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
+    { name: 'Machine à laver', href: '/category/washing-machines', icon: <Drill className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
   ]
 
   return (
     <div className="flex flex-col">
-      <section className="w-full py-8 bg-background">
+      <section className="w-full py-4 md:py-8 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2">
@@ -41,14 +41,14 @@ export default async function Home() {
                 >
                 <CarouselContent>
                     <CarouselItem>
-                        <div className="relative w-full h-[400px]">
+                        <div className="relative w-full h-[250px] md:h-[400px]">
                             <Image src="https://picsum.photos/seed/bts/1200/400" alt="Back to school" fill className="object-cover rounded-lg" data-ai-hint="back to school cartoon student"/>
                              <div className="absolute inset-0 bg-primary/80 rounded-lg"></div>
-                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center space-y-2">
-                                <h1 className="text-6xl font-extrabold" style={{fontFamily: "'Arial Black', Gadget, sans-serif"}}>BACK TO SCHOOL</h1>
-                                <p className="text-2xl font-light">UNE RENTRÉE PARFAITE...</p>
-                                <p className="text-3xl font-bold">CHEZ ELECTROPLANET</p>
-                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full mt-4 !px-8">
+                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center space-y-1 md:space-y-2 w-full px-4">
+                                <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold" style={{fontFamily: "'Arial Black', Gadget, sans-serif"}}>BACK TO SCHOOL</h1>
+                                <p className="text-lg sm:text-xl md:text-2xl font-light">UNE RENTRÉE PARFAITE...</p>
+                                <p className="text-xl sm:text-2xl md:text-3xl font-bold">CHEZ ELECTROPLANET</p>
+                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full mt-2 md:mt-4 !px-6 md:!px-8 text-sm md:text-base">
                                     <Link href="#">
                                         J'en profite
                                     </Link>
@@ -57,13 +57,13 @@ export default async function Home() {
                         </div>
                     </CarouselItem>
                      <CarouselItem>
-                        <div className="relative w-full h-[400px]">
+                        <div className="relative w-full h-[250px] md:h-[400px]">
                             <Image src="https://picsum.photos/seed/hero2/1200/400" alt="Offres technologiques" fill className="object-cover rounded-lg" data-ai-hint="modern living room technology"/>
                             <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
-                             <div className="absolute top-1/2 left-12 -translate-y-1/2 text-white space-y-4">
-                                <h1 className="text-5xl font-bold uppercase">Nouvelles Offres</h1>
-                                <p className="text-2xl">Découvrez nos derniers produits.</p>
-                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
+                             <div className="absolute top-1/2 left-6 md:left-12 -translate-y-1/2 text-white space-y-2 md:space-y-4">
+                                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase">Nouvelles Offres</h1>
+                                <p className="text-lg sm:text-xl md:text-2xl">Découvrez nos derniers produits.</p>
+                                <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 text-sm md:text-base">
                                     <Link href="/category/laptops">
                                         Explorer
                                     </Link>
@@ -76,13 +76,13 @@ export default async function Home() {
                 <CarouselNext className="right-4 hidden sm:flex"/>
                 </Carousel>
             </div>
-            <div className="space-y-4">
-                <Card className="bg-primary text-primary-foreground text-center p-6 flex flex-col items-center justify-center h-[240px] rounded-lg">
-                    <h2 className="text-5xl font-extrabold">PETIT</h2>
-                    <p className="text-4xl font-extrabold">PRIX</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                <Card className="bg-primary text-primary-foreground text-center p-6 flex flex-col items-center justify-center rounded-lg min-h-[150px] sm:min-h-[240px]">
+                    <h2 className="text-4xl md:text-5xl font-extrabold">PETIT</h2>
+                    <p className="text-3xl md:text-4xl font-extrabold">PRIX</p>
                     <ArrowRight className="mt-2 h-8 w-8"/>
                 </Card>
-                <Card className="p-4 flex flex-col justify-between h-[144px] rounded-lg bg-cover bg-center" style={{backgroundImage: "url('https://picsum.photos/seed/wave/400/144')"}} data-ai-hint="smartwatch phone abstract wave">
+                <Card className="relative p-4 flex flex-col justify-between rounded-lg bg-cover bg-center min-h-[150px] sm:min-h-[144px]" style={{backgroundImage: "url('https://picsum.photos/seed/wave/400/144')"}} data-ai-hint="smartwatch phone abstract wave">
                      <div className="bg-black/20 absolute inset-0 rounded-lg"></div>
                     <div className="relative z-10 text-white">
                         <h3 className="font-bold text-lg">SUMMER WAVE</h3>
@@ -97,7 +97,7 @@ export default async function Home() {
         </div>
       </section>
       
-       <section className="w-full py-12">
+       <section className="w-full py-8 md:py-12">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex justify-center">
             <Carousel
@@ -105,22 +105,22 @@ export default async function Home() {
                 align: 'start',
                 loop: false,
               }}
-              className="w-full max-w-6xl"
+              className="w-full max-w-sm sm:max-w-xl md:max-w-3xl lg:max-w-6xl"
             >
               <CarouselContent>
                 {categories.map((category) => (
-                  <CarouselItem key={category.name} className="basis-1/4 sm:basis-1/5 md:basis-1/6 lg:basis-1/8">
+                  <CarouselItem key={category.name} className="basis-1/3 sm:basis-1/4 md:basis-1/6">
                     <Link href={category.href} className="group flex flex-col items-center justify-center gap-2 text-center">
-                       <div className="w-24 h-24 rounded-full bg-card border flex items-center justify-center group-hover:border-primary transition-colors">
+                       <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-card border flex items-center justify-center group-hover:border-primary transition-colors">
                           {category.icon}
                        </div>
-                      <h3 className="text-sm font-semibold">{category.name}</h3>
+                      <h3 className="text-xs sm:text-sm font-semibold">{category.name}</h3>
                     </Link>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="-left-4 hidden sm:flex" />
-              <CarouselNext className="-right-4 hidden sm:flex" />
+              <CarouselPrevious className="-left-2 sm:-left-4 hidden sm:flex" />
+              <CarouselNext className="-right-2 sm:-right-4 hidden sm:flex" />
             </Carousel>
           </div>
         </div>
@@ -166,7 +166,7 @@ export default async function Home() {
               Découvrez notre sélection des meilleures nouveautés technologiques.
             </p>
           </div>
-          <div className="mx-auto max-w-6xl px-4 py-12">
+          <div className="mx-auto max-w-xs sm:max-w-2xl lg:max-w-6xl px-4 py-12">
              <Carousel
               opts={{
                 align: 'start',
@@ -176,15 +176,15 @@ export default async function Home() {
             >
               <CarouselContent>
                 {featuredProducts.map((product) => (
-                  <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/4">
+                  <CarouselItem key={product.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                     <div className="p-1">
                       <ProductCard product={product} />
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="hidden sm:flex"/>
-              <CarouselNext className="hidden sm:flex"/>
+              <CarouselPrevious className="hidden sm:flex -left-8"/>
+              <CarouselNext className="hidden sm:flex -right-8"/>
             </Carousel>
           </div>
         </div>
@@ -204,7 +204,7 @@ export default async function Home() {
                     <Image src="https://picsum.photos/seed/maclogo/150/40" alt="MacBook Air Logo" width={150} height={40} data-ai-hint="apple logo"/>
                 </div>
               </div>
-               <div className="relative h-64 md:h-full">
+               <div className="relative h-64 md:h-full min-h-[300px]">
                   <Image src="https://picsum.photos/seed/macbook/600/400" alt="Macbook Air" layout="fill" objectFit="cover" data-ai-hint="macbook air laptop"/>
                   <div className="absolute bottom-6 right-6">
                     <Button asChild size="lg" variant="outline" className="bg-white/90 hover:bg-white rounded-full border-2 border-gray-300 !px-8 text-black">
@@ -220,3 +220,5 @@ export default async function Home() {
     </div>
   );
 }
+
+    

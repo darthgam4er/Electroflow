@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -38,14 +39,17 @@ export default function CartPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cart.map((item) => (
-              <Card key={item.id} className="flex items-center p-4">
-                <div className="relative w-24 h-24 rounded-md overflow-hidden">
+              <Card key={item.id} className="flex flex-col sm:flex-row items-center p-4">
+                <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-md overflow-hidden flex-shrink-0">
                     <Image src={item.images[0]} alt={item.name} fill className="object-cover" data-ai-hint="product image" />
                 </div>
-                <div className="ml-4 flex-grow">
-                  <Link href={`/products/${item.id}`} className="font-semibold hover:underline">{item.name}</Link>
+                <div className="ml-0 sm:ml-4 mt-4 sm:mt-0 flex-grow w-full">
+                  <div className="flex justify-between items-start">
+                    <Link href={`/products/${item.id}`} className="font-semibold hover:underline text-base sm:text-lg">{item.name}</Link>
+                    <p className="font-semibold text-base sm:text-lg">${(item.price * item.quantity).toLocaleString()}</p>
+                  </div>
                   <p className="text-sm text-muted-foreground">${item.price.toLocaleString()}</p>
-                  <div className="flex items-center mt-2">
+                  <div className="flex items-center justify-between mt-4">
                     <Input
                       type="number"
                       min="1"
@@ -53,13 +57,10 @@ export default function CartPage() {
                       onChange={(e) => updateQuantity(item.id, parseInt(e.target.value, 10))}
                       className="w-20 h-9"
                     />
-                  </div>
-                </div>
-                <div className="flex flex-col items-end ml-4">
-                    <p className="font-semibold">${(item.price * item.quantity).toLocaleString()}</p>
-                    <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)} className="mt-2 text-muted-foreground hover:text-destructive">
+                     <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-destructive">
                         <Trash2 className="h-4 w-4" />
                     </Button>
+                  </div>
                 </div>
               </Card>
             ))}
@@ -102,3 +103,5 @@ export default function CartPage() {
     </div>
   );
 }
+
+    

@@ -1,8 +1,9 @@
+
 import { getProductsByCategory } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import { notFound } from 'next/navigation';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: { slug:string } }) {
   const categoryName = params.slug.charAt(0).toUpperCase() + params.slug.slice(1);
   return {
     title: `${categoryName} - ElectroFlow`,
@@ -23,7 +24,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     <div className="container mx-auto px-4 py-8 md:px-6 md:py-12">
       <h1 className="text-3xl md:text-4xl font-bold mb-8 font-headline">{categoryName}</h1>
       {products.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -34,3 +35,5 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     </div>
   );
 }
+
+    
