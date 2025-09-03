@@ -22,10 +22,10 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import type { HeroSlide } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton";
-import Image from "next/image";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const slideSchema = z.object({
-  imgSrc: z.string().url({ message: "Please enter a valid URL." }),
+  imgSrc: z.string().min(1, { message: "An image is required." }),
   alt: z.string().min(1, { message: "Alt text is required." }),
   dataAiHint: z.string().optional(),
   title: z.string().min(1, { message: "Title is required." }),
@@ -182,22 +182,17 @@ export default function EditSlidePage({ params }: { params: { id: string } }) {
                 <Card>
                     <CardHeader><CardTitle>Image and Styling</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
-                         {form.getValues('imgSrc') && (
-                            <div>
-                                <FormLabel>Current Image</FormLabel>
-                                <div className="mt-2 relative aspect-video w-full max-w-lg rounded-md overflow-hidden border">
-                                    <Image src={form.getValues('imgSrc')} alt="Current slide image" fill className="object-cover" />
-                                d</div>
-                            </div>
-                         )}
-                        <FormField
+                         <FormField
                             control={form.control}
                             name="imgSrc"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Image URL</FormLabel>
+                                    <FormLabel>Slide Image</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="https://example.com/image.png" {...field} />
+                                         <ImageUpload 
+                                            value={field.value ? [field.value] : []}
+                                            onChange={(urls) => field.onChange(urls[0])}
+                                         />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

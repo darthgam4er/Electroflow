@@ -19,11 +19,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
 import { addHomepageCategory } from "../../actions"
 import { useRouter } from "next/navigation"
+import { ImageUpload } from "@/components/ImageUpload";
 
 const categorySchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
   href: z.string().min(1, { message: "Link is required." }),
-  imgSrc: z.string().url({ message: "Please enter a valid URL." }),
+  imgSrc: z.string().min(1, { message: "An image is required." }),
   dataAiHint: z.string().optional(),
 })
 
@@ -102,9 +103,12 @@ export default function NewHomepageCategoryPage() {
                             name="imgSrc"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Image URL</FormLabel>
+                                <FormLabel>Image</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://picsum.photos/seed/new-category/100/100" {...field} />
+                                     <ImageUpload
+                                        value={field.value ? [field.value] : []}
+                                        onChange={(urls) => field.onChange(urls[0])}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>

@@ -23,11 +23,12 @@ import { useEffect, useState } from "react"
 import type { HomepageCategory } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const categorySchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
   href: z.string().min(1, { message: "Link is required." }),
-  imgSrc: z.string().url({ message: "Please enter a valid URL." }),
+  imgSrc: z.string().min(1, { message: "An image is required." }),
   dataAiHint: z.string().optional(),
 })
 
@@ -111,51 +112,50 @@ export default function EditHomepageCategoryPage({ params }: { params: { id: str
                 <Card>
                     <CardHeader><CardTitle>Category Details</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
-                        <div className="flex items-center gap-4">
-                            <Image src={form.getValues('imgSrc')} width={80} height={80} alt={form.getValues('name')} className="rounded-full object-cover h-20 w-20 border" />
-                            <div className="flex-grow space-y-4">
-                               <FormField
-                                    control={form.control}
-                                    name="name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                        <FormLabel>Name</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="e.g. Smartphone" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                 <FormField
-                                    control={form.control}
-                                    name="href"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                        <FormLabel>Link</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="e.g. /category/smartphones" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                        </div>
-
-                        <FormField
+                       <FormField
                             control={form.control}
-                            name="imgSrc"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Image URL</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://picsum.photos/seed/new-category/100/100" {...field} />
+                                    <Input placeholder="e.g. Smartphone" {...field} />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
                             )}
                         />
+                         <FormField
+                            control={form.control}
+                            name="href"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Link</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g. /category/smartphones" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        
+                         <FormField
+                            control={form.control}
+                            name="imgSrc"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Image</FormLabel>
+                                <FormControl>
+                                    <ImageUpload
+                                        value={field.value ? [field.value] : []}
+                                        onChange={(urls) => field.onChange(urls[0])}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                          <FormField
                             control={form.control}
                             name="dataAiHint"
