@@ -42,7 +42,7 @@ export default async function Home() {
                 <CarouselContent>
                     <CarouselItem>
                         <div className="relative w-full h-[250px] md:h-[400px]">
-                            <Image src="https://picsum.photos/seed/bts/1200/400" alt="Back to school" fill className="object-cover rounded-lg" data-ai-hint="back to school cartoon student"/>
+                            <Image src="https://picsum.photos/seed/laptops/1200/400" alt="Back to school" fill className="object-cover rounded-lg" data-ai-hint="laptops on desk"/>
                              <div className="absolute inset-0 bg-primary/80 rounded-lg"></div>
                              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center space-y-1 md:space-y-2 w-full px-4">
                                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold" style={{fontFamily: "'Arial Black', Gadget, sans-serif"}}>BACK TO SCHOOL</h1>
@@ -58,7 +58,7 @@ export default async function Home() {
                     </CarouselItem>
                      <CarouselItem>
                         <div className="relative w-full h-[250px] md:h-[400px]">
-                            <Image src="https://picsum.photos/seed/hero2/1200/400" alt="Offres technologiques" fill className="object-cover rounded-lg" data-ai-hint="modern living room technology"/>
+                            <Image src="https://picsum.photos/seed/laptopdeal/1200/400" alt="Offres technologiques" fill className="object-cover rounded-lg" data-ai-hint="person using laptop"/>
                             <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
                              <div className="absolute top-1/2 left-6 md:left-12 -translate-y-1/2 text-white space-y-2 md:space-y-4">
                                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase">Nouvelles Offres</h1>
@@ -82,7 +82,7 @@ export default async function Home() {
                     <p className="text-3xl md:text-4xl font-extrabold">PRIX</p>
                     <ArrowRight className="mt-2 h-8 w-8"/>
                 </Card>
-                <Card className="relative p-4 flex flex-col justify-between rounded-lg bg-cover bg-center min-h-[150px] sm:min-h-[144px]" style={{backgroundImage: "url('https://picsum.photos/seed/wave/400/144')"}} data-ai-hint="smartwatch phone abstract wave">
+                <Card className="relative p-4 flex flex-col justify-between rounded-lg bg-cover bg-center min-h-[150px] sm:min-h-[144px]" style={{backgroundImage: "url('https://picsum.photos/seed/laptopbanner/400/144')"}} data-ai-hint="gaming laptop sale">
                      <div className="bg-black/20 absolute inset-0 rounded-lg"></div>
                     <div className="relative z-10 text-white">
                         <h3 className="font-bold text-lg">SUMMER WAVE</h3>
@@ -130,14 +130,14 @@ export default async function Home() {
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Link href="#" className="block rounded-lg overflow-hidden">
-                    <Image src="https://picsum.photos/seed/hisense/600/300" width={600} height={300} alt="Hisense" className="w-full h-auto" data-ai-hint="refrigerator television washing machine" />
+                    <Image src="https://picsum.photos/seed/laptopad1/600/300" width={600} height={300} alt="Hisense" className="w-full h-auto" data-ai-hint="laptop on clean desk" />
                 </Link>
                 <div className="flex flex-col gap-4">
                     <Link href="#" className="block rounded-lg overflow-hidden">
-                        <Image src="https://picsum.photos/seed/ufesa/600/142" width={600} height={142} alt="Ufesa" className="w-full h-auto" data-ai-hint="grill coffee maker food" />
+                        <Image src="https://picsum.photos/seed/laptopad2/600/142" width={600} height={142} alt="Ufesa" className="w-full h-auto" data-ai-hint="thin laptop side view" />
                     </Link>
                     <Link href="#" className="block rounded-lg overflow-hidden">
-                        <Image src="https://picsum.photos/seed/elexia/600/142" width={600} height={142} alt="Elexia" className="w-full h-auto" data-ai-hint="kettle toaster stand mixer" />
+                        <Image src="https://picsum.photos/seed/laptopad3/600/142" width={600} height={142} alt="Elexia" className="w-full h-auto" data-ai-hint="person typing on laptop" />
                     </Link>
                 </div>
             </div>
