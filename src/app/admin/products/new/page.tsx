@@ -24,13 +24,15 @@ import { toast } from "@/hooks/use-toast"
 import { Trash2 } from "lucide-react"
 import { addProduct } from "../actions";
 import { useRouter } from "next/navigation";
+import { ImageUpload } from "@/components/ImageUpload"
+import { useState } from "react";
 
 const productSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   description: z.string().min(10, { message: "Description must be at least 10 characters." }),
   price: z.coerce.number().positive(),
   category: z.string().min(1, { message: "Please select a category." }),
-  images: z.array(z.object({ url: z.string().url({ message: "Please enter a valid URL." }) })).min(1, { message: "Please add at least one image." }),
+  images: z.array(z.string().url()).min(1, { message: "Please add at least one image." }),
   specs: z.array(z.object({ key: z.string().min(1), value: z.string().min(1) })),
   tag: z.enum(['Promo', 'Nouveau', '']),
   discount: z.coerce.number().min(0).max(1).optional(),
@@ -40,6 +42,8 @@ type ProductFormValues = z.infer<typeof productSchema>
 
 export default function NewProductPage() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -47,16 +51,11 @@ export default function NewProductPage() {
       description: "",
       price: 0,
       category: "",
-      images: [{ url: "" }],
+      images: [],
       specs: [{ key: "", value: "" }],
       tag: '',
       discount: 0,
     },
-  });
-
-  const { fields: imageFields, append: appendImage, remove: removeImage } = useFieldArray({
-    control: form.control,
-    name: "images",
   });
 
   const { fields: specFields, append: appendSpec, remove: removeSpec } = useFieldArray({
@@ -66,6 +65,7 @@ export default function NewProductPage() {
 
 
   async function onSubmit(data: ProductFormValues) {
+    setIsSubmitting(true);
     const specsObject = data.specs.reduce((acc, spec) => {
         if(spec.key) {
             acc[spec.key] = spec.value;
@@ -75,12 +75,12 @@ export default function NewProductPage() {
 
     const productData = {
         ...data,
-        images: data.images.map(img => img.url),
         specs: specsObject,
         reviews: [],
     };
 
     const result = await addProduct(productData);
+    setIsSubmitting(false);
 
     if (result.success) {
         toast({
@@ -116,7 +116,7 @@ export default function NewProductPage() {
                                 <FormItem>
                                 <FormLabel>Product Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="e.g. ASUS VIVOBOOK" {...field} />
+                                    <Input placeholder="e.g. ASUS VIVOBOOK" {...field} disabled={isSubmitting} />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -133,6 +133,7 @@ export default function NewProductPage() {
                                     placeholder="Tell us a little bit about the product"
                                     className="resize-none"
                                     {...field}
+                                    disabled={isSubmitting}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -145,36 +146,22 @@ export default function NewProductPage() {
                     <Card>
                         <CardHeader><CardTitle>Images</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
-                            {imageFields.map((field, index) => (
-                                <FormField
-                                key={field.id}
+                            <FormField
                                 control={form.control}
-                                name={`images.${index}.url`}
+                                name="images"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className={index !== 0 ? "sr-only" : ""}>Image URL</FormLabel>
-                                        <div className="flex items-center gap-2">
-                                            <FormControl>
-                                                <Input placeholder="https://example.com/image.png" {...field} />
-                                            </FormControl>
-                                            <Button type="button" variant="outline" size="icon" onClick={() => removeImage(index)} disabled={imageFields.length <= 1}>
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
+                                        <FormControl>
+                                            <ImageUpload
+                                                value={field.value}
+                                                onChange={(urls) => field.onChange(urls)}
+                                                disabled={isSubmitting}
+                                            />
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                                />
-                            ))}
-                             <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                className="mt-2"
-                                onClick={() => appendImage({ url: "" })}
-                            >
-                                Add Image
-                            </Button>
+                            />
                         </CardContent>
                     </Card>
 
@@ -190,7 +177,7 @@ export default function NewProductPage() {
                                             <FormItem className="flex-grow">
                                                 <FormLabel className={index !== 0 ? "sr-only" : ""}>Spec Name</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="e.g. CPU" {...field} />
+                                                    <Input placeholder="e.g. CPU" {...field} disabled={isSubmitting} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -203,13 +190,13 @@ export default function NewProductPage() {
                                             <FormItem className="flex-grow">
                                                 <FormLabel className={index !== 0 ? "sr-only" : ""}>Spec Value</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="e.g. Quantum Fusion A1" {...field} />
+                                                    <Input placeholder="e.g. Quantum Fusion A1" {...field} disabled={isSubmitting} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-                                    <Button type="button" variant="outline" size="icon" onClick={() => removeSpec(index)} disabled={specFields.length <= 1}>
+                                    <Button type="button" variant="outline" size="icon" onClick={() => removeSpec(index)} disabled={specFields.length <= 1 || isSubmitting}>
                                         <Trash2 className="h-4 w-4" />
                                     </Button>
                                 </div>
@@ -220,6 +207,7 @@ export default function NewProductPage() {
                                 size="sm"
                                 className="mt-2"
                                 onClick={() => appendSpec({ key: "", value: "" })}
+                                disabled={isSubmitting}
                             >
                                 Add Specification
                             </Button>
@@ -237,7 +225,7 @@ export default function NewProductPage() {
                                     <FormItem>
                                     <FormLabel>Price (in DH)</FormLabel>
                                     <FormControl>
-                                        <Input type="number" placeholder="2699" {...field} />
+                                        <Input type="number" placeholder="2699" {...field} disabled={isSubmitting} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -249,7 +237,7 @@ export default function NewProductPage() {
                                 render={({ field }) => (
                                     <FormItem>
                                     <FormLabel>Category</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a category" />
@@ -280,7 +268,7 @@ export default function NewProductPage() {
                                 render={({ field }) => (
                                     <FormItem>
                                     <FormLabel>Tag</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a tag (optional)" />
@@ -303,7 +291,7 @@ export default function NewProductPage() {
                                     <FormItem>
                                     <FormLabel>Discount Percentage</FormLabel>
                                     <FormControl>
-                                        <Input type="number" placeholder="e.g. 0.2 for 20%" {...field} step="0.01" />
+                                        <Input type="number" placeholder="e.g. 0.2 for 20%" {...field} step="0.01" disabled={isSubmitting} />
                                     </FormControl>
                                     <FormDescription>
                                         Enter a value between 0 (0%) and 1 (100%).
@@ -317,8 +305,8 @@ export default function NewProductPage() {
                 </div>
             </div>
              <div className="flex justify-end gap-2">
-                <Button variant="outline" type="button" onClick={() => form.reset()}>Cancel</Button>
-                <Button type="submit">Save Product</Button>
+                <Button variant="outline" type="button" onClick={() => form.reset()} disabled={isSubmitting}>Cancel</Button>
+                <Button type="submit" disabled={isSubmitting}>Save Product</Button>
             </div>
             </form>
         </Form>
