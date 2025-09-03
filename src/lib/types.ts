@@ -19,3 +19,17 @@ export interface Product {
 export interface CartItem extends Product {
   quantity: number;
 }
+
+export interface HeroSlide {
+    id: string;
+    imgSrc: string;
+    alt: string;
+    dataAiHint: string;
+    title: string;
+    subtitle: string;
+    ctaText: string;
+    ctaLink: string;
+    titleClassName?: string;
+    subtitleClassName?: string;
+    containerClassName?: string;
+}

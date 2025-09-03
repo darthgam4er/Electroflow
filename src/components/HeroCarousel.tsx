@@ -14,101 +14,73 @@ import {
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { getSlides } from '@/app/admin/homepage/actions';
+import type { HeroSlide } from '@/lib/types';
+import { Skeleton } from './ui/skeleton';
 
 export function HeroCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
+  const [slides, setSlides] = React.useState<HeroSlide[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function loadSlides() {
+      setLoading(true);
+      const fetchedSlides = await getSlides();
+      setSlides(fetchedSlides);
+      setLoading(false);
+    }
+    loadSlides();
+  }, []);
 
   React.useEffect(() => {
     if (!api) {
       return;
     }
 
-    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
 
-    api.on('select', () => {
+    const onSelect = () => {
       setCurrent(api.selectedScrollSnap());
-    });
+    };
+
+    api.on('select', onSelect);
+
+    return () => {
+      api.off('select', onSelect);
+    };
   }, [api]);
 
-  const slides = [
-    {
-      imgSrc: 'https://picsum.photos/seed/laptops/1200/400',
-      alt: 'Back to school',
-      dataAiHint: 'laptops on desk',
-      content: (
-        <>
-          <div className="absolute inset-0 bg-primary/80 rounded-lg"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center space-y-1 md:space-y-2 w-full px-4">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold" style={{fontFamily: "'Arial Black', Gadget, sans-serif"}}>BACK TO SCHOOL</h1>
-            <p className="text-lg sm:text-xl md:text-2xl font-light">UNE RENTRÉE PARFAITE...</p>
-            <p className="text-xl sm:text-2xl md:text-3xl font-bold">CHEZ ELECTROPLANET</p>
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full mt-2 md:mt-4 !px-6 md:!px-8 text-sm md:text-base">
-                <Link href="#">
-                    J'en profite
-                </Link>
-            </Button>
-          </div>
-        </>
-      ),
-    },
-    {
-      imgSrc: 'https://picsum.photos/seed/laptopdeal/1200/400',
-      alt: 'Offres technologiques',
-      dataAiHint: 'person using laptop',
-      content: (
-        <>
-          <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
-          <div className="absolute top-1/2 left-6 md:left-12 -translate-y-1/2 text-white space-y-2 md:space-y-4">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase">Nouvelles Offres</h1>
-            <p className="text-lg sm:text-xl md:text-2xl">Découvrez nos derniers produits.</p>
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 text-sm md:text-base">
-                <Link href="/category/laptops">
-                    Explorer
-                </Link>
-            </Button>
-          </div>
-        </>
-      ),
-    },
-    {
-      imgSrc: 'https://picsum.photos/seed/phone-sale/1200/400',
-      alt: 'Vente de téléphones',
-      dataAiHint: 'smartphone sale',
-      content: (
-        <>
-          <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
-          <div className="absolute bottom-10 right-10 text-white text-right space-y-2">
-            <h2 className="text-2xl md:text-4xl font-bold">Les derniers smartphones</h2>
-            <p className="text-md md:text-xl">À des prix imbattables.</p>
-            <Button asChild variant="secondary">
-                <Link href="/category/smartphones">
-                    Voir les offres
-                </Link>
-            </Button>
-          </div>
-        </>
-      ),
-    },
-  ];
+  if (loading) {
+    return <Skeleton className="w-full h-[250px] md:h-[400px] rounded-lg" />;
+  }
 
   return (
     <div className="relative">
-      <Carousel setApi={setApi} className="w-full" opts={{loop: true}}>
+      <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
         <CarouselContent>
-          {slides.map((slide, index) => (
-            <CarouselItem key={index}>
+          {slides.map((slide) => (
+            <CarouselItem key={slide.id}>
               <div className="relative w-full h-[250px] md:h-[400px]">
                 <Image
                   src={slide.imgSrc}
                   alt={slide.alt}
                   fill
+                  priority={slides.indexOf(slide) === 0}
                   className="object-cover rounded-lg"
                   data-ai-hint={slide.dataAiHint}
                 />
-                {slide.content}
+                <div className={cn("absolute inset-0 bg-black/40 rounded-lg", slide.containerClassName)}></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center space-y-1 md:space-y-2 w-full px-4">
+                    <h1 className={cn("text-3xl sm:text-4xl md:text-6xl font-extrabold", slide.titleClassName)}>{slide.title}</h1>
+                    <p className={cn("text-lg sm:text-xl md:text-2xl font-light", slide.subtitleClassName)}>{slide.subtitle}</p>
+                    <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 rounded-full mt-2 md:mt-4 !px-6 md:!px-8 text-sm md:text-base">
+                        <Link href={slide.ctaLink}>
+                            {slide.ctaText}
+                        </Link>
+                    </Button>
+                </div>
               </div>
             </CarouselItem>
           ))}
@@ -117,13 +89,13 @@ export function HeroCarousel() {
         <CarouselNext className="right-4 hidden sm:flex" />
       </Carousel>
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {Array.from({ length: count }).map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => api?.scrollTo(index)}
             className={cn(
-              "h-2 w-2 rounded-full transition-colors",
-              current === index ? "bg-white" : "bg-white/50"
+              "h-2 w-2 rounded-full transition-all duration-300",
+              current === index ? "bg-white w-4" : "bg-white/50"
             )}
             aria-label={`Go to slide ${index + 1}`}
           />
