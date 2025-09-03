@@ -11,14 +11,6 @@ import { revalidatePath } from 'next/cache';
 export async function getSlides(): Promise<HeroSlide[]> {
     const slidesCol = collection(db, 'heroSlides');
     const slideSnapshot = await getDocs(slidesCol);
-
-    if (slideSnapshot.empty) {
-        console.log("No slides found, seeding with initial data...");
-        await seedSlides();
-        const newSnapshot = await getDocs(slidesCol);
-        const slideList = newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HeroSlide));
-        return slideList.sort((a, b) => a.title.localeCompare(b.title));
-    }
     
     const slideList = slideSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HeroSlide));
     return slideList.sort((a, b) => a.title.localeCompare(b.title));
@@ -105,14 +97,6 @@ const initialHomepageCategories: Omit<HomepageCategory, 'id'>[] = [
 export async function getHomepageCategories(): Promise<HomepageCategory[]> {
     const categoriesCol = collection(db, 'homepageCategories');
     const categorySnapshot = await getDocs(categoriesCol);
-
-     if (categorySnapshot.empty) {
-        console.log("No homepage categories found, seeding...");
-        await seedHomepageCategories();
-        const newSnapshot = await getDocs(categoriesCol);
-        return newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HomepageCategory));
-    }
-
     return categorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HomepageCategory));
 }
 
