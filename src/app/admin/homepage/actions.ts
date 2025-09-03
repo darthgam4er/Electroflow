@@ -94,12 +94,12 @@ export async function updateSlide(id: string, data: Partial<Omit<HeroSlide, 'id'
 // --- Homepage Categories Actions ---
 
 const initialHomepageCategories: Omit<HomepageCategory, 'id'>[] = [
-    { name: 'Smartphone', href: '/category/smartphones', imgSrc: 'https://picsum.photos/seed/smartphones/100/100' },
-    { name: 'Téléviseur', href: '/category/televisions', imgSrc: 'https://picsum.photos/seed/tv/100/100' },
-    { name: 'Gros électroménager', href: '/category/appliances', imgSrc: 'https://picsum.photos/seed/appliances/100/100' },
-    { name: 'Aspirateur', href: '/category/vacuums', imgSrc: 'https://picsum.photos/seed/vacuum/100/100' },
-    { name: 'Montre connectée', href: '/category/wearables', imgSrc: 'https://picsum.photos/seed/watch/100/100' },
-    { name: 'Machine à laver', href: '/category/washing-machines', imgSrc: 'https://picsum.photos/seed/washer/100/100' },
+    { name: 'Smartphone', href: '/category/smartphones', imgSrc: 'https://picsum.photos/seed/smartphones/100/100', dataAiHint: 'smartphone' },
+    { name: 'Téléviseur', href: '/category/televisions', imgSrc: 'https://picsum.photos/seed/tv/100/100', dataAiHint: 'television' },
+    { name: 'Gros électroménager', href: '/category/appliances', imgSrc: 'https://picsum.photos/seed/appliances/100/100', dataAiHint: 'home appliance' },
+    { name: 'Aspirateur', href: '/category/vacuums', imgSrc: 'https://picsum.photos/seed/vacuum/100/100', dataAiHint: 'vacuum cleaner' },
+    { name: 'Montre connectée', href: '/category/wearables', imgSrc: 'https://picsum.photos/seed/watch/100/100', dataAiHint: 'smartwatch' },
+    { name: 'Machine à laver', href: '/category/washing-machines', imgSrc: 'https://picsum.photos/seed/washer/100/100', dataAiHint: 'washing machine' },
 ];
 
 export async function getHomepageCategories(): Promise<HomepageCategory[]> {
@@ -122,6 +122,43 @@ async function seedHomepageCategories() {
         await addDoc(categoriesCol, category);
     }
 }
+
+export async function addHomepageCategory(data: Omit<HomepageCategory, 'id'>) {
+    try {
+        await addDoc(collection(db, 'homepageCategories'), data);
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error adding document: ", error);
+        return { success: false, error: 'Failed to add category' };
+    }
+}
+
+export async function getHomepageCategoryById(id: string): Promise<HomepageCategory | null> {
+    const docRef = doc(db, 'homepageCategories', id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() } as HomepageCategory;
+    } else {
+        return null;
+    }
+}
+
+export async function updateHomepageCategory(id: string, data: Partial<Omit<HomepageCategory, 'id'>>) {
+     try {
+        const docRef = doc(db, 'homepageCategories', id);
+        await updateDoc(docRef, data);
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating document: ", error);
+        return { success: false, error: 'Failed to update category' };
+    }
+}
+
 
 export async function deleteHomepageCategory(id: string) {
     try {

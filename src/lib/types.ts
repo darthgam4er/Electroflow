@@ -39,4 +39,5 @@ export interface HomepageCategory {
     name: string;
     href: string;
     imgSrc: string;
+    dataAiHint?: string;
 }
