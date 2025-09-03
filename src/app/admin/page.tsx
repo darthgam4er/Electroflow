@@ -11,7 +11,7 @@ export default function AdminDashboard() {
        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card>
+        <Card className="transition-all duration-300 hover:shadow-xl hover:scale-105">
           <CardHeader>
             <CardTitle>Manage Products</CardTitle>
           </CardHeader>
@@ -23,7 +23,7 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="transition-all duration-300 hover:shadow-xl hover:scale-105">
           <CardHeader>
             <CardTitle>Manage Categories</CardTitle>
           </CardHeader>
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="transition-all duration-300 hover:shadow-xl hover:scale-105">
           <CardHeader>
             <CardTitle>Manage Homepage</CardTitle>
           </CardHeader>

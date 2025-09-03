@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -32,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/products/${product.id}`} className="block group">
-      <Card className="h-full flex flex-col overflow-hidden transition-all duration-300 hover:shadow-xl border-2 border-transparent group-hover:border-primary">
+      <Card className="h-full flex flex-col overflow-hidden transition-all duration-300 hover:shadow-xl border-2 border-transparent group-hover:border-primary hover:scale-105">
         <CardHeader className="p-2">
            <div className="relative w-full aspect-square">
             {product.tag && (
