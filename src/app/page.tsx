@@ -71,6 +71,21 @@ export default async function Home() {
                              </div>
                         </div>
                     </CarouselItem>
+                    <CarouselItem>
+                        <div className="relative w-full h-[250px] md:h-[400px]">
+                            <Image src="https://picsum.photos/seed/phone-sale/1200/400" alt="Vente de téléphones" fill className="object-cover rounded-lg" data-ai-hint="smartphone sale"/>
+                            <div className="absolute inset-0 bg-black/50 rounded-lg"></div>
+                             <div className="absolute bottom-10 right-10 text-white text-right space-y-2">
+                                <h2 className="text-2xl md:text-4xl font-bold">Les derniers smartphones</h2>
+                                <p className="text-md md:text-xl">À des prix imbattables.</p>
+                                <Button asChild variant="secondary">
+                                    <Link href="/category/smartphones">
+                                        Voir les offres
+                                    </Link>
+                                </Button>
+                             </div>
+                        </div>
+                    </CarouselItem>
                 </CarouselContent>
                 <CarouselPrevious className="left-4 hidden sm:flex"/>
                 <CarouselNext className="right-4 hidden sm:flex"/>
