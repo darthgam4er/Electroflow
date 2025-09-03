@@ -18,12 +18,12 @@ export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
 
   const categories = [
-    { name: 'Smartphone', href: '/category/smartphones', icon: <Smartphone className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Téléviseur', href: '/category/televisions', icon: <Tv className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Gros électroménager', href: '/category/appliances', icon: <WashingMachine className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Aspirateur', href: '/category/vacuums', icon: <Fan className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Montre connectée', href: '/category/wearables', icon: <Watch className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
-    { name: 'Machine à laver', href: '/category/washing-machines', icon: <Drill className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground group-hover:text-primary" /> },
+    { name: 'Smartphone', href: '/category/smartphones', imgSrc: 'https://picsum.photos/seed/smartphones/100/100' },
+    { name: 'Téléviseur', href: '/category/televisions', imgSrc: 'https://picsum.photos/seed/tv/100/100' },
+    { name: 'Gros électroménager', href: '/category/appliances', imgSrc: 'https://picsum.photos/seed/appliances/100/100' },
+    { name: 'Aspirateur', href: '/category/vacuums', imgSrc: 'https://picsum.photos/seed/vacuum/100/100' },
+    { name: 'Montre connectée', href: '/category/wearables', imgSrc: 'https://picsum.photos/seed/watch/100/100' },
+    { name: 'Machine à laver', href: '/category/washing-machines', imgSrc: 'https://picsum.photos/seed/washer/100/100' },
   ]
 
   return (
@@ -111,8 +111,8 @@ export default async function Home() {
                 {categories.map((category) => (
                   <CarouselItem key={category.name} className="basis-1/3 sm:basis-1/4 md:basis-1/6">
                     <Link href={category.href} className="group flex flex-col items-center justify-center gap-2 text-center">
-                       <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-card border flex items-center justify-center group-hover:border-primary transition-colors">
-                          {category.icon}
+                       <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-card border flex items-center justify-center group-hover:border-primary transition-colors overflow-hidden">
+                          <Image src={category.imgSrc} alt={category.name} width={100} height={100} className="object-cover" />
                        </div>
                       <h3 className="text-xs sm:text-sm font-semibold">{category.name}</h3>
                     </Link>
@@ -129,15 +129,24 @@ export default async function Home() {
       <section className="w-full py-8">
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Link href="#" className="block rounded-lg overflow-hidden">
-                    <Image src="https://picsum.photos/seed/newlaptops/600/300" width={600} height={300} alt="New Laptops" className="w-full h-auto" data-ai-hint="new laptops" />
+                <Link href="#" className="block rounded-lg overflow-hidden relative group">
+                    <Image src="https://picsum.photos/seed/hisense/600/400" width={600} height={400} alt="Hisense Products" className="w-full h-auto" data-ai-hint="Hisense smart tv appliance" />
+                     <div className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg group-hover:scale-110 transition-transform">
+                        <ArrowRight className="h-6 w-6 text-primary" />
+                    </div>
                 </Link>
                 <div className="flex flex-col gap-4">
-                    <Link href="#" className="block rounded-lg overflow-hidden">
-                        <Image src="https://picsum.photos/seed/phones/600/142" width={600} height={142} alt="Smartphones" className="w-full h-auto" data-ai-hint="smartphones" />
+                    <Link href="#" className="block rounded-lg overflow-hidden relative group">
+                        <Image src="https://picsum.photos/seed/ufesa/600/192" width={600} height={192} alt="Ufesa Products" className="w-full h-auto object-cover" data-ai-hint="kitchen appliances grill" />
+                        <div className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg group-hover:scale-110 transition-transform">
+                            <ArrowRight className="h-6 w-6 text-primary" />
+                        </div>
                     </Link>
-                    <Link href="#" className="block rounded-lg overflow-hidden">
-                        <Image src="https://picsum.photos/seed/tablets/600/142" width={600} height={142} alt="Tablets" className="w-full h-auto" data-ai-hint="tablets" />
+                    <Link href="#" className="block rounded-lg overflow-hidden relative group">
+                        <Image src="https://picsum.photos/seed/elexia/600/192" width={600} height={192} alt="Elexia Products" className="w-full h-auto object-cover" data-ai-hint="kettle toaster mixer" />
+                        <div className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg group-hover:scale-110 transition-transform">
+                            <ArrowRight className="h-6 w-6 text-primary" />
+                        </div>
                     </Link>
                 </div>
             </div>
