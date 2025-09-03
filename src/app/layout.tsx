@@ -4,8 +4,7 @@ import { Inter } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { CartProvider } from '@/context/CartContext';
 import { Toaster } from '@/components/ui/toaster';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import ConditionalLayout from '@/components/ConditionalLayout';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -28,9 +27,9 @@ export default function RootLayout({
       </head>
       <body className={cn('font-body antialiased flex flex-col min-h-screen bg-background', inter.variable)}>
         <CartProvider>
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
           <Toaster />
         </CartProvider>
       </body>
