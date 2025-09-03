@@ -83,9 +83,11 @@ export default function Header() {
                         ))}
                     </nav>
                      <div className="mt-auto p-6 border-t">
-                        <Button variant="ghost" className="w-full justify-start gap-2">
-                            <MapPin className="h-5 w-5" />
-                            Nos magasins
+                        <Button variant="ghost" className="w-full justify-start gap-2" asChild>
+                           <Link href="/stores">
+                                <MapPin className="h-5 w-5" />
+                                Nos magasins
+                            </Link>
                         </Button>
                      </div>
                  </div>
@@ -179,9 +181,11 @@ export default function Header() {
                 </div>
             </nav>
             <div className="hidden md:flex">
-                 <Button variant="ghost" className="gap-2">
-                    <MapPin className="h-5 w-5" />
-                    Nos magasins
+                 <Button variant="ghost" className="gap-2" asChild>
+                    <Link href="/stores">
+                        <MapPin className="h-5 w-5" />
+                        Nos magasins
+                    </Link>
                 </Button>
             </div>
         </div>
@@ -201,5 +205,3 @@ export default function Header() {
     </header>
   );
 }
-
-    
