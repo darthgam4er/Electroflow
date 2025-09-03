@@ -74,9 +74,9 @@ export default function NewProductPage() {
             return acc;
         }, {} as Record<string, string>),
         // Add a default empty reviews array for new products
-        reviews: [], 
+        reviews: [],
     };
-    
+
     const result = await addProduct(productData);
 
     if (result.success) {
@@ -90,7 +90,7 @@ export default function NewProductPage() {
             title: "Error",
             description: result.error,
             variant: "destructive",
-        })
+        });
     }
   }
 
