@@ -11,18 +11,34 @@ const firebaseConfig = {
   messagingSenderId: "581265386004"
 };
 
-// Initialize Firebase Admin SDK
-if (!admin.apps.length) {
+const projectId = process.env.FIREBASE_PROJECT_ID;
+const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+
+if (!projectId || !clientEmail || !privateKey) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(
+      '\x1b[31m%s\x1b[0m', // Red text
+      'Firebase Admin SDK environment variables not set. Please set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY in your .env file. Skipping Firebase Admin initialization.'
+    );
+  }
+} else if (!admin.apps.length) {
     admin.initializeApp({
         credential: admin.credential.cert({
-            projectId: process.env.FIREBASE_PROJECT_ID,
-            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-            privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+            projectId,
+            clientEmail,
+            privateKey,
         }),
         storageBucket: firebaseConfig.storageBucket,
     });
     console.log("Firebase Admin SDK initialized.");
 }
 
-export const adminDb = admin.firestore();
-export const adminStorage = admin.storage();
+let adminDb, adminStorage;
+
+if (admin.apps.length) {
+    adminDb = admin.firestore();
+    adminStorage = admin.storage();
+}
+
+export { adminDb, adminStorage };
