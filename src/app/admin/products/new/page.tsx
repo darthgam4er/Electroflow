@@ -66,16 +66,17 @@ export default function NewProductPage() {
 
 
   async function onSubmit(data: ProductFormValues) {
+    const specsObject = data.specs.reduce((acc, spec) => {
+        if(spec.key) {
+            acc[spec.key] = spec.value;
+        }
+        return acc;
+    }, {} as Record<string, string>);
+
     const productData = {
         ...data,
         images: data.images.map(img => img.url),
-        specs: data.specs.reduce((acc, spec) => {
-            if(spec.key) {
-                acc[spec.key] = spec.value;
-            }
-            return acc;
-        }, {} as Record<string, string>),
-        // Add a default empty reviews array for new products
+        specs: specsObject,
         reviews: [],
     };
 
@@ -279,7 +280,7 @@ export default function NewProductPage() {
                                 render={({ field }) => (
                                     <FormItem>
                                     <FormLabel>Tag</FormLabel>
-                                    <Select onValuechange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a tag (optional)" />
