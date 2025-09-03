@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { getSlides, seedSlides, getHomepageCategories, seedHomepageCategories, deleteHomepageCategory } from './actions';
+import { getSlides, getHomepageCategories, deleteHomepageCategory } from './actions';
 import type { HeroSlide, HomepageCategory } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Trash2 } from 'lucide-react';
@@ -30,20 +30,11 @@ export default function AdminHomepagePage() {
 
   async function loadData() {
     setLoading(true);
-    let fetchedSlides = await getSlides();
-    if (fetchedSlides.length === 0) {
-      console.log("No slides found, seeding database...");
-      await seedSlides();
-      fetchedSlides = await getSlides();
-    }
-
-    let fetchedCategories = await getHomepageCategories();
-    if (fetchedCategories.length === 0) {
-        console.log("No homepage categories found, seeding...");
-        await seedHomepageCategories();
-        fetchedCategories = await getHomepageCategories();
-    }
-
+    const [fetchedSlides, fetchedCategories] = await Promise.all([
+        getSlides(),
+        getHomepageCategories()
+    ]);
+    
     setSlides(fetchedSlides);
     setCategories(fetchedCategories);
     setLoading(false);
@@ -92,7 +83,7 @@ export default function AdminHomepagePage() {
                   <Skeleton className="h-8 w-16" />
                 </div>
               ))
-            ) : (
+            ) : slides.length > 0 ? (
               slides.map((slide) => (
                 <div key={slide.id} className="flex items-center gap-4 p-2 border rounded-md">
                   <Image src={slide.imgSrc} width={100} height={50} alt={slide.alt} className="rounded-md object-cover h-[50px] w-[100px]"/>
@@ -102,6 +93,8 @@ export default function AdminHomepagePage() {
                   </Button>
                 </div>
               ))
+            ) : (
+                <p className="text-sm text-muted-foreground">No slides found. Add one to get started.</p>
             )}
           </div>
           {/* We might add an "Add New Slide" button here in the future */}
@@ -129,7 +122,7 @@ export default function AdminHomepagePage() {
                    <Skeleton className="h-8 w-8" />
                 </div>
               ))
-            ) : (
+            ) : categories.length > 0 ? (
               categories.map((category) => (
                 <div key={category.id} className="flex items-center gap-4 p-2 border rounded-md">
                    <Image src={category.imgSrc} width={40} height={40} alt={category.name} className="rounded-full object-cover h-10 w-10"/>
@@ -159,6 +152,8 @@ export default function AdminHomepagePage() {
                   </AlertDialog>
                 </div>
               ))
+            ) : (
+                <p className="text-sm text-muted-foreground">No featured categories found. Add one to get started.</p>
             )}
           </div>
         </CardContent>

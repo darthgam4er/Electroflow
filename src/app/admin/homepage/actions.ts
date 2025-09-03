@@ -8,6 +8,23 @@ import { revalidatePath } from 'next/cache';
 
 // --- Hero Slides Actions ---
 
+export async function getSlides(): Promise<HeroSlide[]> {
+    const slidesCol = collection(db, 'heroSlides');
+    const slideSnapshot = await getDocs(slidesCol);
+
+    if (slideSnapshot.empty) {
+        console.log("No slides found, seeding with initial data...");
+        await seedSlides();
+        const newSnapshot = await getDocs(slidesCol);
+        const slideList = newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HeroSlide));
+        return slideList.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    
+    const slideList = slideSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HeroSlide));
+    return slideList.sort((a, b) => a.title.localeCompare(b.title));
+}
+
+
 const initialSlides: Omit<HeroSlide, 'id'>[] = [
     {
       imgSrc: 'https://picsum.photos/seed/laptops/1200/400',
@@ -42,15 +59,7 @@ const initialSlides: Omit<HeroSlide, 'id'>[] = [
     },
 ];
 
-export async function getSlides(): Promise<HeroSlide[]> {
-    const slidesCol = collection(db, 'heroSlides');
-    const slideSnapshot = await getDocs(slidesCol);
-    const slideList = slideSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HeroSlide));
-    // Simple order for consistency, can be improved with an 'order' field later
-    return slideList.sort((a, b) => a.title.localeCompare(b.title));
-}
-
-export async function seedSlides() {
+async function seedSlides() {
     const slidesCol = collection(db, 'heroSlides');
     for (const slide of initialSlides) {
         await addDoc(slidesCol, slide);
@@ -96,10 +105,18 @@ const initialHomepageCategories: Omit<HomepageCategory, 'id'>[] = [
 export async function getHomepageCategories(): Promise<HomepageCategory[]> {
     const categoriesCol = collection(db, 'homepageCategories');
     const categorySnapshot = await getDocs(categoriesCol);
+
+     if (categorySnapshot.empty) {
+        console.log("No homepage categories found, seeding...");
+        await seedHomepageCategories();
+        const newSnapshot = await getDocs(categoriesCol);
+        return newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HomepageCategory));
+    }
+
     return categorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HomepageCategory));
 }
 
-export async function seedHomepageCategories() {
+async function seedHomepageCategories() {
     const categoriesCol = collection(db, 'homepageCategories');
     for (const category of initialHomepageCategories) {
         await addDoc(categoriesCol, category);
