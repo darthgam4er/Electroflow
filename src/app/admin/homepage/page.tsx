@@ -3,9 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getSlides, getHomepageCategories, deleteHomepageCategory } from './actions';
+import { getSlides, getHomepageCategories } from './actions';
 import type { HeroSlide, HomepageCategory } from '@/lib/types';
-import { Trash2 } from 'lucide-react';
 import { DeleteCategoryButton } from './DeleteCategoryButton';
 
 export default async function AdminHomepagePage() {
