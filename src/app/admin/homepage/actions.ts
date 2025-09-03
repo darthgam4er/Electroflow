@@ -2,9 +2,11 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import type { HeroSlide } from '@/lib/types';
-import { collection, getDocs, doc, getDoc, updateDoc, addDoc } from 'firebase/firestore';
+import type { HeroSlide, HomepageCategory } from '@/lib/types';
+import { collection, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
+
+// --- Hero Slides Actions ---
 
 const initialSlides: Omit<HeroSlide, 'id'>[] = [
     {
@@ -76,5 +78,42 @@ export async function updateSlide(id: string, data: Partial<Omit<HeroSlide, 'id'
     } catch (error) {
         console.error("Error updating document: ", error);
         return { success: false, error: 'Failed to update slide' };
+    }
+}
+
+
+// --- Homepage Categories Actions ---
+
+const initialHomepageCategories: Omit<HomepageCategory, 'id'>[] = [
+    { name: 'Smartphone', href: '/category/smartphones', imgSrc: 'https://picsum.photos/seed/smartphones/100/100' },
+    { name: 'Téléviseur', href: '/category/televisions', imgSrc: 'https://picsum.photos/seed/tv/100/100' },
+    { name: 'Gros électroménager', href: '/category/appliances', imgSrc: 'https://picsum.photos/seed/appliances/100/100' },
+    { name: 'Aspirateur', href: '/category/vacuums', imgSrc: 'https://picsum.photos/seed/vacuum/100/100' },
+    { name: 'Montre connectée', href: '/category/wearables', imgSrc: 'https://picsum.photos/seed/watch/100/100' },
+    { name: 'Machine à laver', href: '/category/washing-machines', imgSrc: 'https://picsum.photos/seed/washer/100/100' },
+];
+
+export async function getHomepageCategories(): Promise<HomepageCategory[]> {
+    const categoriesCol = collection(db, 'homepageCategories');
+    const categorySnapshot = await getDocs(categoriesCol);
+    return categorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HomepageCategory));
+}
+
+export async function seedHomepageCategories() {
+    const categoriesCol = collection(db, 'homepageCategories');
+    for (const category of initialHomepageCategories) {
+        await addDoc(categoriesCol, category);
+    }
+}
+
+export async function deleteHomepageCategory(id: string) {
+    try {
+        await deleteDoc(doc(db, 'homepageCategories', id));
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting document: ", error);
+        return { success: false, error: 'Failed to delete category' };
     }
 }

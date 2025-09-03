@@ -14,18 +14,11 @@ import { getFeaturedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import { ArrowRight } from 'lucide-react';
 import { HeroCarousel } from '@/components/HeroCarousel';
+import { getHomepageCategories } from './admin/homepage/actions';
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
-
-  const categories = [
-    { name: 'Smartphone', href: '/category/smartphones', imgSrc: 'https://picsum.photos/seed/smartphones/100/100' },
-    { name: 'Téléviseur', href: '/category/televisions', imgSrc: 'https://picsum.photos/seed/tv/100/100' },
-    { name: 'Gros électroménager', href: '/category/appliances', imgSrc: 'https://picsum.photos/seed/appliances/100/100' },
-    { name: 'Aspirateur', href: '/category/vacuums', imgSrc: 'https://picsum.photos/seed/vacuum/100/100' },
-    { name: 'Montre connectée', href: '/category/wearables', imgSrc: 'https://picsum.photos/seed/watch/100/100' },
-    { name: 'Machine à laver', href: '/category/washing-machines', imgSrc: 'https://picsum.photos/seed/washer/100/100' },
-  ]
+  const categories = await getHomepageCategories();
 
   return (
     <div className="flex flex-col">

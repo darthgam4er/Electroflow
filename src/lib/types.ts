@@ -33,3 +33,10 @@ export interface HeroSlide {
     subtitleClassName?: string;
     containerClassName?: string;
 }
+
+export interface HomepageCategory {
+    id: string;
+    name: string;
+    href: string;
+    imgSrc: string;
+}
