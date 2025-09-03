@@ -9,9 +9,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { getFeaturedProducts, getProductsByCategory } from '@/lib/products';
+import { getFeaturedProducts } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
-import { ArrowRight, Laptop, Smartphone, Watch } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
@@ -32,7 +32,7 @@ export default function Home() {
                 <CarouselContent>
                     <CarouselItem>
                         <div className="relative w-full h-[400px]">
-                            <Image src="https://picsum.photos/seed/hero1/1200/400" alt="Summer freshness solution" fill className="object-cover rounded-lg" data-ai-hint="beach scene air conditioner"/>
+                            <Image src="https://picsum.photos/seed/hero1/1200/400" alt="Votre solution fraîcheur" fill className="object-cover rounded-lg" data-ai-hint="beach scene air conditioner"/>
                              <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
                              <div className="absolute top-1/2 left-12 -translate-y-1/2 text-white space-y-4">
                                 <h1 className="text-5xl font-bold uppercase" style={{color: '#FFD700'}}>Votre solution</h1>
@@ -47,7 +47,7 @@ export default function Home() {
                     </CarouselItem>
                      <CarouselItem>
                         <div className="relative w-full h-[400px]">
-                            <Image src="https://picsum.photos/seed/hero2/1200/400" alt="Tech deals" fill className="object-cover rounded-lg" data-ai-hint="modern living room technology"/>
+                            <Image src="https://picsum.photos/seed/hero2/1200/400" alt="Offres technologiques" fill className="object-cover rounded-lg" data-ai-hint="modern living room technology"/>
                             <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
                              <div className="absolute top-1/2 left-12 -translate-y-1/2 text-white space-y-4">
                                 <h1 className="text-5xl font-bold uppercase">Nouvelles Offres</h1>

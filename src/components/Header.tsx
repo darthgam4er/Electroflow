@@ -96,7 +96,7 @@ export default function Header() {
                 <nav className="flex flex-col gap-4">
                   {navLinks.map((link) => (
                     <Link
-                      key={link.href}
+                      key={link.label}
                       href={link.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={cn(
