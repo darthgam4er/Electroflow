@@ -13,6 +13,7 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export function HeroCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -25,10 +26,10 @@ export function HeroCarousel() {
     }
 
     setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+    setCurrent(api.selectedScrollSnap());
 
     api.on('select', () => {
-      setCurrent(api.selectedScrollSnap() + 1);
+      setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
 
@@ -115,11 +116,19 @@ export function HeroCarousel() {
         <CarouselPrevious className="left-4 hidden sm:flex" />
         <CarouselNext className="right-4 hidden sm:flex" />
       </Carousel>
-      {count > 0 && (
-          <div className="absolute bottom-4 right-4 bg-black/50 text-white text-xs font-semibold px-2 py-1 rounded-full">
-            <span>{String(current).padStart(2, '0')}</span> / <span>{String(count).padStart(2, '0')}</span>
-          </div>
-      )}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        {Array.from({ length: count }).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => api?.scrollTo(index)}
+            className={cn(
+              "h-2 w-2 rounded-full transition-colors",
+              current === index ? "bg-white" : "bg-white/50"
+            )}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
