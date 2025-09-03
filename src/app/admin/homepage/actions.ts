@@ -16,6 +16,17 @@ export async function getSlides(): Promise<HeroSlide[]> {
     return slideList.sort((a, b) => a.title.localeCompare(b.title));
 }
 
+export async function addSlide(data: Omit<HeroSlide, 'id'>) {
+    try {
+        await addDoc(collection(db, 'heroSlides'), data);
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error adding slide: ", error);
+        return { success: false, error: 'Failed to add slide' };
+    }
+}
 
 const initialSlides: Omit<HeroSlide, 'id'>[] = [
     {
@@ -28,6 +39,7 @@ const initialSlides: Omit<HeroSlide, 'id'>[] = [
       ctaLink: '#',
       titleClassName: "font-['Arial_Black',_Gadget,_sans-serif]",
       containerClassName: 'bg-primary/80',
+      tag: 'Promo',
     },
     {
       imgSrc: 'https://picsum.photos/seed/laptopdeal/1200/400',
@@ -38,6 +50,7 @@ const initialSlides: Omit<HeroSlide, 'id'>[] = [
       ctaText: 'Explorer',
       ctaLink: '/category/laptops',
       containerClassName: 'bg-black/30',
+      tag: 'Nouveau',
     },
     {
       imgSrc: 'https://picsum.photos/seed/phone-sale/1200/400',
@@ -48,6 +61,7 @@ const initialSlides: Omit<HeroSlide, 'id'>[] = [
       ctaText: 'Voir les offres',
       ctaLink: '/category/smartphones',
       containerClassName: 'bg-black/50',
+      tag: 'Promo',
     },
 ];
 
@@ -82,6 +96,17 @@ export async function updateSlide(id: string, data: Partial<Omit<HeroSlide, 'id'
     }
 }
 
+export async function deleteSlide(id: string) {
+    try {
+        await deleteDoc(doc(db, 'heroSlides', id));
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        return { success: true };
+    } catch (error) {
+        console.error("Error deleting slide: ", error);
+        return { success: false, error: 'Failed to delete slide' };
+    }
+}
 
 // --- Homepage Categories Actions ---
 
@@ -143,7 +168,6 @@ export async function updateHomepageCategory(id: string, data: Partial<Omit<Home
     }
 }
 
-
 export async function deleteHomepageCategory(id: string) {
     try {
         await deleteDoc(doc(db, 'homepageCategories', id));
@@ -153,5 +177,47 @@ export async function deleteHomepageCategory(id: string) {
     } catch (error) {
         console.error("Error deleting document: ", error);
         return { success: false, error: 'Failed to delete category' };
+    }
+}
+
+// --- Database Seeding Function ---
+export async function seedDatabase() {
+    try {
+        console.log('🌱 Starting database seeding...');
+        
+        // Check if slides already exist
+        const existingSlides = await getSlides();
+        if (existingSlides.length === 0) {
+            // Add slides
+            console.log('📱 Adding hero slides...');
+            for (const slide of initialSlides) {
+                await addDoc(collection(db, 'heroSlides'), slide);
+                console.log(`✅ Added slide: ${slide.title}`);
+            }
+        }
+        
+        // Check if categories already exist
+        const existingCategories = await getHomepageCategories();
+        if (existingCategories.length === 0) {
+            // Add categories
+            console.log('📁 Adding homepage categories...');
+            for (const category of initialHomepageCategories) {
+                await addDoc(collection(db, 'homepageCategories'), category);
+                console.log(`✅ Added category: ${category.name}`);
+            }
+        }
+        
+        revalidatePath('/admin/homepage');
+        revalidatePath('/');
+        
+        return { 
+            success: true, 
+            message: 'Database seeded successfully!',
+            slidesAdded: existingSlides.length === 0 ? initialSlides.length : 0,
+            categoriesAdded: existingCategories.length === 0 ? initialHomepageCategories.length : 0
+        };
+    } catch (error) {
+        console.error('❌ Error seeding database:', error);
+        return { success: false, error: 'Failed to seed database' };
     }
 }

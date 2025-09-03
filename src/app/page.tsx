@@ -65,7 +65,15 @@ export default async function Home() {
                   <CarouselItem key={category.name} className="basis-1/3 sm:basis-1/4 md:basis-1/6">
                     <Link href={category.href} className="group flex flex-col items-center justify-center gap-2 text-center">
                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-card border flex items-center justify-center group-hover:border-primary transition-colors overflow-hidden">
-                          <Image src={category.imgSrc} alt={category.name} width={100} height={100} className="object-cover" />
+                          <Image 
+                            src={category.imgSrc} 
+                            alt={category.name} 
+                            width={100} 
+                            height={100} 
+                            className="object-cover"
+                            loading="lazy"
+                            sizes="(max-width: 640px) 80px, 96px"
+                          />
                        </div>
                       <h3 className="text-xs sm:text-sm font-semibold">{category.name}</h3>
                     </Link>
@@ -83,20 +91,47 @@ export default async function Home() {
         <div className="container mx-auto px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Link href="#" className="block rounded-lg overflow-hidden relative group">
-                    <Image src="https://picsum.photos/seed/hisense/600/400" width={600} height={400} alt="Hisense Products" className="w-full h-auto" data-ai-hint="Hisense smart tv appliance" />
+                    <Image 
+                      src="https://picsum.photos/seed/hisense/600/400" 
+                      width={600} 
+                      height={400} 
+                      alt="Hisense Products" 
+                      className="w-full h-auto" 
+                      data-ai-hint="Hisense smart tv appliance"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
                      <div className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg group-hover:scale-110 transition-transform">
                         <ArrowRight className="h-6 w-6 text-primary" />
                     </div>
                 </Link>
                 <div className="flex flex-col gap-4">
                     <Link href="#" className="block rounded-lg overflow-hidden relative group">
-                        <Image src="https://picsum.photos/seed/ufesa/600/192" width={600} height={192} alt="Ufesa Products" className="w-full h-auto object-cover" data-ai-hint="kitchen appliances grill" />
+                        <Image 
+                          src="https://picsum.photos/seed/ufesa/600/192" 
+                          width={600} 
+                          height={192} 
+                          alt="Ufesa Products" 
+                          className="w-full h-auto object-cover" 
+                          data-ai-hint="kitchen appliances grill"
+                          loading="lazy"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
                         <div className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg group-hover:scale-110 transition-transform">
                             <ArrowRight className="h-6 w-6 text-primary" />
                         </div>
                     </Link>
                     <Link href="#" className="block rounded-lg overflow-hidden relative group">
-                        <Image src="https://picsum.photos/seed/elexia/600/192" width={600} height={192} alt="Elexia Products" className="w-full h-auto object-cover" data-ai-hint="kettle toaster mixer" />
+                        <Image 
+                          src="https://picsum.photos/seed/elexia/600/192" 
+                          width={600} 
+                          height={192} 
+                          alt="Elexia Products" 
+                          className="w-full h-auto object-cover" 
+                          data-ai-hint="kettle toaster mixer"
+                          loading="lazy"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
                         <div className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-lg group-hover:scale-110 transition-transform">
                             <ArrowRight className="h-6 w-6 text-primary" />
                         </div>
@@ -110,10 +145,28 @@ export default async function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="#" className="block">
-              <Image src="https://picsum.photos/seed/keyboard-sale/600/150" alt="Gaming Keyboards" width={600} height={150} className="w-full h-auto rounded-lg" data-ai-hint="gaming keyboard" />
+              <Image 
+                src="https://picsum.photos/seed/keyboard-sale/600/150" 
+                alt="Gaming Keyboards" 
+                width={600} 
+                height={150} 
+                className="w-full h-auto rounded-lg" 
+                data-ai-hint="gaming keyboard"
+                loading="lazy"
+                sizes="(max-width: 640px) 100vw, 50vw"
+              />
             </Link>
             <Link href="#" className="block">
-              <Image src="https://picsum.photos/seed/laptop-offers/600/150" alt="Laptop Offers" width={600} height={150} className="w-full h-auto rounded-lg" data-ai-hint="laptop sale" />
+              <Image 
+                src="https://picsum.photos/seed/laptop-offers/600/150" 
+                alt="Laptop Offers" 
+                width={600} 
+                height={150} 
+                className="w-full h-auto rounded-lg" 
+                data-ai-hint="laptop sale"
+                loading="lazy"
+                sizes="(max-width: 640px) 100vw, 50vw"
+              />
             </Link>
           </div>
         </div>
@@ -163,11 +216,27 @@ export default async function Home() {
                 <h3 className="text-3xl md:text-4xl font-bold">Il y a de la puissance dans l'air.</h3>
                 <p className="text-2xl mt-2">À seulement <span className="font-bold">8 590 MAD.</span></p>
                 <div className="mt-6 flex justify-center md:justify-start">
-                    <Image src="https://picsum.photos/seed/maclogo/150/40" alt="MacBook Air Logo" width={150} height={40} data-ai-hint="apple logo"/>
+                    <Image 
+                      src="https://picsum.photos/seed/maclogo/150/40" 
+                      alt="MacBook Air Logo" 
+                      width={150} 
+                      height={40} 
+                      data-ai-hint="apple logo"
+                      loading="lazy"
+                      sizes="150px"
+                    />
                 </div>
               </div>
                <div className="relative h-64 md:h-full min-h-[300px]">
-                  <Image src="https://picsum.photos/seed/macbook/600/400" alt="Macbook Air" layout="fill" objectFit="cover" data-ai-hint="macbook air laptop"/>
+                  <Image 
+                    src="https://picsum.photos/seed/macbook/600/400" 
+                    alt="Macbook Air" 
+                    fill 
+                    className="object-cover"
+                    data-ai-hint="macbook air laptop"
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                   <div className="absolute bottom-6 right-6">
                     <Button asChild size="lg" variant="outline" className="bg-white/90 hover:bg-white rounded-full border-2 border-gray-300 !px-8 text-black">
                         <Link href="#">J'en profite</Link>

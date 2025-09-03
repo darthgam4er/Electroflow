@@ -15,10 +15,14 @@ const projectId = process.env.FIREBASE_PROJECT_ID;
 const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
 const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
+let adminApp: admin.app.App | null = null;
+let adminDb: admin.firestore.Firestore | null = null;
+let adminStorage: admin.storage.Storage | null = null;
+
 if (!admin.apps.length) {
   if (projectId && clientEmail && privateKey) {
     try {
-      admin.initializeApp({
+      adminApp = admin.initializeApp({
         credential: admin.credential.cert({
             projectId,
             clientEmail,
@@ -26,7 +30,12 @@ if (!admin.apps.length) {
         }),
         storageBucket: firebaseConfig.storageBucket,
       });
-      console.log("Firebase Admin SDK initialized.");
+      console.log("Firebase Admin SDK initialized successfully.");
+      
+      // Initialize services
+      adminDb = admin.firestore();
+      adminStorage = admin.storage();
+      
     } catch (error) {
        console.error("Firebase Admin SDK initialization failed:", error);
     }
@@ -38,20 +47,11 @@ if (!admin.apps.length) {
         );
       }
   }
-}
-
-let adminDb, adminStorage;
-
-if (admin.apps.length) {
-    adminDb = admin.firestore();
-    adminStorage = admin.storage();
 } else {
-    if (process.env.NODE_ENV !== 'production') {
-        console.warn(
-          '\x1b[31m%s\x1b[0m',
-          'Firebase Admin SDK not initialized. adminDb and adminStorage will be undefined.'
-        );
-    }
+  // Use existing app
+  adminApp = admin.app();
+  adminDb = admin.firestore();
+  adminStorage = admin.storage();
 }
 
-export { adminDb, adminStorage };
+export { adminDb, adminStorage, adminApp };

@@ -1,7 +1,8 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',
+  trailingSlash: true,
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -9,7 +10,14 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'placehold.co',
@@ -18,7 +26,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'picsum.photos',
+        hostname: 'firebasestorage.googleapis.com',
         port: '',
         pathname: '/**',
       },

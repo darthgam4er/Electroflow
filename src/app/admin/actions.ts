@@ -1,7 +1,7 @@
 
 'use server';
 
-import { adminStorage } from "@/lib/firebase-admin";
+import { imageUploadService } from "@/lib/image-upload";
 import { v4 as uuidv4 } from 'uuid';
 
 export async function uploadFile(formData: FormData) {
@@ -10,26 +10,127 @@ export async function uploadFile(formData: FormData) {
     return { success: false, error: 'No file provided.' };
   }
 
-  const fileBuffer = Buffer.from(await file.arrayBuffer());
-  const fileExtension = file.name.split('.').pop();
-  const fileName = `${uuidv4()}.${fileExtension}`;
-  const bucket = adminStorage.bucket();
-  const fileUpload = bucket.file(`uploads/${fileName}`);
+  // Check if image upload service is available
+  if (!imageUploadService.isAvailable()) {
+    return { 
+      success: false, 
+      error: 'Image upload service not configured. Please check your Firebase configuration.' 
+    };
+  }
 
   try {
-    await fileUpload.save(fileBuffer, {
-      metadata: {
-        contentType: file.type,
-      },
+    // Upload image with optimized settings for admin uploads
+    const result = await imageUploadService.uploadImage(file, {
+      folder: 'admin-uploads',
+      maxSize: 15 * 1024 * 1024, // 15MB for admin uploads
+      quality: 90, // Higher quality for admin content
+      generateThumbnails: false,
     });
 
-    // Make the file public and get the URL
-    await fileUpload.makePublic();
-    const publicUrl = fileUpload.publicUrl();
-
-    return { success: true, url: publicUrl };
+    if (result.success && result.url) {
+      return { 
+        success: true, 
+        url: result.url,
+        metadata: result.metadata 
+      };
+    } else {
+      return { 
+        success: false, 
+        error: result.error || 'Upload failed' 
+      };
+    }
   } catch (error) {
     console.error('Error uploading file:', error);
-    return { success: false, error: 'Failed to upload file.' };
+    return { 
+      success: false, 
+      error: `Failed to upload file: ${error instanceof Error ? error.message : 'Unknown error'}` 
+    };
+  }
+}
+
+/**
+ * Upload multiple files at once
+ */
+export async function uploadMultipleFiles(formData: FormData) {
+  const files = formData.getAll('files') as File[];
+  if (!files || files.length === 0) {
+    return { success: false, error: 'No files provided.' };
+  }
+
+  if (!imageUploadService.isAvailable()) {
+    return { 
+      success: false, 
+      error: 'Image upload service not configured.' 
+    };
+  }
+
+  try {
+    const results = await imageUploadService.uploadMultipleImages(files, {
+      folder: 'admin-uploads',
+      maxSize: 15 * 1024 * 1024,
+      quality: 90,
+    });
+
+    const successfulUploads = results.filter(r => r.success);
+    const failedUploads = results.filter(r => !r.success);
+
+    return {
+      success: successfulUploads.length > 0,
+      urls: successfulUploads.map(r => r.url),
+      errors: failedUploads.map(r => r.error),
+      metadata: successfulUploads.map(r => r.metadata),
+    };
+  } catch (error) {
+    console.error('Error uploading multiple files:', error);
+    return { 
+      success: false, 
+      error: `Failed to upload files: ${error instanceof Error ? error.message : 'Unknown error'}` 
+    };
+  }
+}
+
+/**
+ * Delete a file from storage
+ */
+export async function deleteFile(filename: string) {
+  if (!imageUploadService.isAvailable()) {
+    return { 
+      success: false, 
+      error: 'Image upload service not configured.' 
+    };
+  }
+
+  try {
+    const result = await imageUploadService.deleteImage(filename);
+    return result;
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    return { 
+      success: false, 
+      error: `Failed to delete file: ${error instanceof Error ? error.message : 'Unknown error'}` 
+    };
+  }
+}
+
+/**
+ * Get file metadata
+ */
+export async function getFileMetadata(filename: string) {
+  if (!imageUploadService.isAvailable()) {
+    return { 
+      success: false, 
+      error: 'Image upload service not configured.' 
+    };
+  }
+
+  try {
+    const metadata = await imageUploadService.getImageMetadata(filename);
+    return { success: true, metadata };
+  } catch (error) {
+    console.error('Error getting file metadata:', error);
+    return { 
+      success: false, 
+      error: `Failed to get file metadata: ${error instanceof Error ? error.message : 'Unknown error'}` 
+    };
   }
 }

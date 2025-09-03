@@ -24,7 +24,25 @@ interface HeroCarouselProps {
 export function HeroCarousel({ slides }: HeroCarouselProps) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
+  const [isVisible, setIsVisible] = React.useState(false);
+  const carouselRef = React.useRef<HTMLDivElement>(null);
  
+  // Intersection Observer for performance
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (carouselRef.current) {
+      observer.observe(carouselRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   React.useEffect(() => {
     if (!api) {
       return;
@@ -48,7 +66,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={carouselRef}>
       <Carousel setApi={setApi} className="w-full" opts={{ loop: true }}>
         <CarouselContent>
           {slides.map((slide, index) => (
@@ -59,8 +77,13 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                   alt={slide.alt}
                   fill
                   priority={index === 0}
+                  loading={index === 0 ? 'eager' : 'lazy'}
                   className="object-cover rounded-lg"
                   data-ai-hint={slide.dataAiHint}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 66vw, 50vw"
+                  quality={85}
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
                 <div className={cn("absolute inset-0 bg-black/40 rounded-lg", slide.containerClassName)}></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center space-y-1 md:space-y-2 w-full px-4">

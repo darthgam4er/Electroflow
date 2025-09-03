@@ -32,6 +32,7 @@ export interface HeroSlide {
     titleClassName?: string;
     subtitleClassName?: string;
     containerClassName?: string;
+    tag?: 'Promo' | 'Nouveau';
 }
 
 export interface HomepageCategory {

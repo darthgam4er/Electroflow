@@ -17,13 +17,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/hooks/use-toast"
-import { getHomepageCategoryById, updateHomepageCategory } from "../../../actions"
+import { updateCategory } from "../../../actions"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { ImageUpload } from "@/components/ImageUpload"
+import { ArrowLeft, Save, Eye, Loader2 } from "lucide-react"
+import Link from "next/link"
+import { useState, useEffect } from "react"
 import type { HomepageCategory } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { ImageUpload } from "@/components/ImageUpload";
 
 const categorySchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
