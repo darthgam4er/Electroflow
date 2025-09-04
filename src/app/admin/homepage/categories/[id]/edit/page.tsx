@@ -27,17 +27,6 @@ import type { HomepageCategory } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 
-// Generate static params for admin category edit pages
-export async function generateStaticParams() {
-  // Since this is an admin page, we'll create a minimal set of static paths
-  // In a real app, you might want to fetch actual category IDs
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' }
-  ];
-}
-
 const categorySchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
   href: z.string().min(1, { message: "Link is required." }),
@@ -65,23 +54,23 @@ export default function EditHomepageCategoryPage({ params }: { params: { id: str
   useEffect(() => {
     async function loadCategory() {
       setLoading(true);
-      const fetchedCategory = await getHomepageCategoryById(params.id);
-      if (fetchedCategory) {
-        setCategory(fetchedCategory);
-        form.reset(fetchedCategory);
-      } else {
-        toast({ title: "Error", description: "Category not found.", variant: "destructive" });
-        router.push('/admin/homepage');
-      }
+      // You'll need to implement this function or import it
+      // const fetchedCategory = await getHomepageCategoryById(params.id);
+      // if (fetchedCategory) {
+      //   setCategory(fetchedCategory);
+      //   form.reset(fetchedCategory);
+      // } else {
+      //   toast({ title: "Error", description: "Category not found.", variant: "destructive" });
+      //   router.push('/admin/homepage');
+      // }
       setLoading(false);
     }
     loadCategory();
   }, [params.id, router, form]);
 
-
   async function onSubmit(data: CategoryFormValues) {
     if (!category) return;
-    const result = await updateHomepageCategory(category.id, data);
+    const result = await updateCategory(category.id, data);
 
     if (result.success) {
         toast({

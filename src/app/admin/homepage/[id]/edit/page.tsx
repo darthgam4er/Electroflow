@@ -24,17 +24,6 @@ import type { HeroSlide } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton";
 import { ImageUpload } from "@/components/ImageUpload";
 
-// Generate static params for admin homepage edit pages
-export async function generateStaticParams() {
-  // Since this is an admin page, we'll create a minimal set of static paths
-  // In a real app, you might want to fetch actual slide IDs
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' }
-  ];
-}
-
 const slideSchema = z.object({
   imgSrc: z.string().min(1, { message: "An image is required." }),
   alt: z.string().min(1, { message: "Alt text is required." }),
