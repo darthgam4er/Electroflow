@@ -27,6 +27,17 @@ import type { HomepageCategory } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 
+// Generate static params for admin category edit pages
+export async function generateStaticParams() {
+  // Since this is an admin page, we'll create a minimal set of static paths
+  // In a real app, you might want to fetch actual category IDs
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' }
+  ];
+}
+
 const categorySchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
   href: z.string().min(1, { message: "Link is required." }),

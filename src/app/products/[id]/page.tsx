@@ -1,7 +1,7 @@
 
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { getProductById } from '@/lib/products';
+import { getProductById, getAllProducts } from '@/lib/products';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -16,6 +16,19 @@ import { Star, ShoppingCart } from 'lucide-react';
 import { ProductRecommendations } from '@/components/ProductRecommendations';
 import type { Product } from '@/lib/types';
 import { AddToCartButton } from './AddToCartButton';
+
+// Generate static params for all products
+export async function generateStaticParams() {
+  try {
+    const products = await getAllProducts();
+    return products.map((product) => ({
+      id: product.id,
+    }));
+  } catch (error) {
+    // Fallback to empty array if products can't be fetched
+    return [];
+  }
+}
 
 
 export default async function ProductDetailPage({ params }: { params: { id: string } }) {

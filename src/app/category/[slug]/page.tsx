@@ -3,6 +3,25 @@ import { getProductsByCategory } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
 import { notFound } from 'next/navigation';
 
+// Generate static params for all categories
+export async function generateStaticParams() {
+  // Define your main categories - you can expand this list
+  const categories = [
+    'smartphones',
+    'laptops', 
+    'tablets',
+    'accessories',
+    'gaming',
+    'audio',
+    'cameras',
+    'smartwatches'
+  ];
+  
+  return categories.map((category) => ({
+    slug: category,
+  }));
+}
+
 export async function generateMetadata({ params }: { params: { slug:string } }) {
   const categoryName = params.slug.charAt(0).toUpperCase() + params.slug.slice(1);
   return {
