@@ -6,7 +6,9 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Upload, Trash2, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { uploadFile } from '@/app/admin/actions';
+import { storage } from '@/lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ImageUploadProps {
   value: string[];
@@ -81,29 +83,28 @@ export function ImageUpload({
         // Update progress
         setUploadProgress(prev => ({ ...prev, [file.name]: 25 }));
 
-        // Upload to Firebase Storage
-        const formData = new FormData();
-        formData.append('file', file);
+        // Upload to Firebase Storage using client-side SDK
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();
+        const filename = `admin-uploads/${uuidv4()}.${fileExtension}`;
+        const storageRef = ref(storage, filename);
         
         setUploadProgress(prev => ({ ...prev, [file.name]: 50 }));
         
-        const result = await uploadFile(formData);
+        // Upload the file
+        const snapshot = await uploadBytes(storageRef, file);
+        
+        setUploadProgress(prev => ({ ...prev, [file.name]: 75 }));
+        
+        // Get the download URL
+        const downloadURL = await getDownloadURL(snapshot.ref);
         
         setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
 
-        if (result.success && result.url) {
-          uploadedUrls.push(result.url);
-          toast({
-            title: "Upload Successful",
-            description: `"${file.name}" uploaded successfully.`,
-          });
-        } else {
-          toast({
-            title: "Upload Failed",
-            description: result.error || `Could not upload ${file.name}.`,
-            variant: "destructive",
-          });
-        }
+        uploadedUrls.push(downloadURL);
+        toast({
+          title: "Upload Successful",
+          description: `"${file.name}" uploaded successfully.`,
+        });
       } catch (error) {
         console.error('Upload error:', error);
         toast({
