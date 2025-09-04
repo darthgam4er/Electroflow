@@ -4,10 +4,10 @@ A modern Next.js e-commerce application with admin dashboard, product management
 
 ## 🚀 **Hosting**
 
-This application is now hosted on **Vercel** for optimal Next.js performance and automatic deployments.
+This application is hosted on **Vercel** for optimal Next.js performance and automatic deployments.
 
 ### **Live URLs:**
-- **Production:** https://electroflow-1wi3m1hx5-darthgam4ers-projects.vercel.app
+- **Production:** https://electroflow-goc608qzu-darthgam4ers-projects.vercel.app
 - **Preview:** https://electroflow-2c8mcseuw-darthgam4ers-projects.vercel.app
 
 ## 🛠 **Tech Stack**
@@ -16,7 +16,7 @@ This application is now hosted on **Vercel** for optimal Next.js performance and
 - **Styling:** Tailwind CSS
 - **UI Components:** Shadcn/ui
 - **Database:** Firebase Firestore
-- **Storage:** Firebase Storage
+- **Storage:** Firebase Storage (for images)
 - **Authentication:** Firebase Auth
 - **Hosting:** Vercel
 
@@ -31,7 +31,7 @@ This application is now hosted on **Vercel** for optimal Next.js performance and
 
 - **Responsive Design** - Mobile-first approach
 - **Admin Dashboard** - Product and category management
-- **Image Upload** - Firebase Storage integration
+- **Image Upload** - Firebase Storage integration (client-side)
 - **Product Catalog** - Dynamic routing and filtering
 - **Shopping Cart** - Context-based state management
 - **Performance Optimized** - Next.js best practices
@@ -51,3 +51,8 @@ vercel --prod
 - `/src/lib` - Utility functions and configurations
 - `/src/context` - React context providers
 - `/src/hooks` - Custom React hooks
+
+## 📚 **Documentation**
+
+- **VERCEL_DEPLOYMENT.md** - Complete Vercel hosting guide
+- **docs/blueprint.md** - Project architecture overview
